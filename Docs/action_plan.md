@@ -47,4 +47,5 @@
 - Amélioration continue de l’UX et de la performance
 
 📌 **Ce document servira de guide pour organiser le développement de MIRAI.**
- Fait par : @MIRAI_DEV
+ 
+### Fait par : @MIRAI_DEV
