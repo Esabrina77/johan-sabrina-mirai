@@ -8,8 +8,8 @@
 3. Développer le serveur dans l'arborescence
 4. Cliquer droit sur "Login/Group Roles"
 5. Sélectionner "Create" > "Login/Group Role"
-6. Dans l'onglet "General", entrer le nom d'utilisateur (ex: `mirai_user`)
-7. Dans l'onglet "Definition", définir un mot de passe sécurisé (ex: `m1ra1_db-passw0rd`)
+6. Dans l'onglet "General", entrer le nom d'utilisateur (`mirai_user`)
+7. Dans l'onglet "Definition", définir un mot de passe sécurisé 
 8. Dans l'onglet "Privileges", activer "Can login?" et "Create database"
 9. Cliquer sur "Save"
 
@@ -33,7 +33,7 @@
 1. Créer ou modifier le fichier `.env` à la racine du dossier backend
 2. Ajouter la variable d'environnement avec les informations de connexion:
    ```
-   DATABASE_URL="postgresql://mirai_user:m1ra1_db-passw0rd@localhost:5432/mirai?schema=public"
+   DATABASE_URL="postgresql://mirai_user:votre_mot_de_passe@localhost:5432/mirai?schema=public"
    ```
 
 ### Initialisation de Prisma
@@ -42,6 +42,7 @@
    npx prisma init
    ```
 2. Remplacer le contenu du fichier `schema.prisma` par le schéma complet de l'application
+
 3. Générer et appliquer la migration initiale:
    ```
    npx prisma migrate dev --name init
@@ -51,18 +52,18 @@
    npx prisma studio
    ```
 
-## Pour les développeurs qui rejoignent le projet
+## Pour les développeurs qui rejoignent le projet après avoir fait un pull ⬇️ ⚠️
 
 ### Après avoir cloné le dépôt
-1. Installer les dépendances:
+1. Installer les dépendances si elles ne sont pas déjà installées:
    ```
    cd backend
    npm install
    ```
 
-2. Créer un fichier `.env` avec les informations de connexion fournies par l'équipe:
+2. Créer un fichier `.env` avec les informations de connexion 
    ```
-   DATABASE_URL="postgresql://mirai_user:m1ra1_db-passw0rd@localhost:5432/mirai?schema=public"
+   DATABASE_URL="postgresql://mirai_user:votre_mot_de_passe@localhost:5432/mirai?schema=public"
    ```
 
 3. Appliquer les migrations existantes:
