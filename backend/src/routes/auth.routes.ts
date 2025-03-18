@@ -9,5 +9,5 @@ router.post('/register', registerLimiter, authController.register as unknown as 
 
 // Route de connexion avec rate limiting
 router.post('/login', loginLimiter, authController.login as unknown as RequestHandler);
-
+ 
 export default router;
