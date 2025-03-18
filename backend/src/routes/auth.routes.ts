@@ -11,3 +11,4 @@ router.post('/register', registerLimiter, authController.register as unknown as 
 router.post('/login', loginLimiter, authController.login as unknown as RequestHandler);
  
 export default router;
+
