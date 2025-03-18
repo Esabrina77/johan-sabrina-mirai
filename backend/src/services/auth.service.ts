@@ -37,7 +37,7 @@ export const register = async (data: RegisterData) => {
     },
   });
 
-  const token = generateToken(user.id);
+  const token = generateToken(user.id, user.role);
 
   return {
     user,
@@ -66,7 +66,7 @@ export const login = async ({ email, password }: { email: string; password: stri
     throw new Error('Invalid credentials');
   }
 
-  const token = generateToken(user.id);
+  const token = generateToken(user.id, user.role);
 
   return {
     user: {

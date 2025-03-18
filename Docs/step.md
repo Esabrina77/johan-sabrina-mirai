@@ -6,7 +6,7 @@
 - ✅ Initialisation de Prisma et connexion à PostgreSQL
 - ✅ Création du schéma de base de données (fait)
 - ✅ Migration Prisma (`npx prisma migrate dev --name init`)
-- 📂 Mise en place des modèles Prisma (`User`, `Profile`, `Mission`, etc.)
+- ✅ Mise en place des modèles Prisma (`User`, `Profile`, `Mission`, etc.)
 
 ### **1.2. Authentification et Sécurité**
 - ✅ Implémentation de l'authentification avec JWT
@@ -22,10 +22,10 @@
 - ✅ Route `DELETE /users/profile` (suppression de compte)
 
 ### **1.4. Gestion des Missions**
-- 📌 Route `GET /missions` (récupérer toutes les missions)
-- ➕ Route `POST /missions` (création d'une mission)
-- 🔄 Route `PATCH /missions/:id` (modification d'une mission)
-- 🗑️ Route `DELETE /missions/:id` (suppression d'une mission)
+- ✅ Route `GET /missions` (récupérer toutes les missions)
+- ✅ Route `POST /missions` (création d'une mission)
+- ✅ Route `PATCH /missions/:id` (modification d'une mission)
+- ✅ Route `DELETE /missions/:id` (suppression d'une mission)
 
 ### **1.5. Candidatures et Matching**
 - ✅ Route `POST /applications` (postuler à une mission)
