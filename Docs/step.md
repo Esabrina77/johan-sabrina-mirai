@@ -14,8 +14,10 @@
 - ✅ Middleware d'authentification (`authMiddleware.ts`)
 - ✅ Sécurisation des routes privées avec JWT
 - ✅ Limitation de débit (Rate Limiting) pour sécurité
+- ✅ Gestion des rôles utilisateur (middleware de rôles)
 
 ### **1.3. Gestion des Utilisateurs et Profils**
+- ✅ Route `GET /users` (récupérer tous les utilisateurs)
 - ✅ Route `GET /users/profile` (récupérer son profil)
 - ✅ Route `PUT /users/profile` (mise à jour du profil)
 - ✅ Route `PUT /users/profile/password` (changer son mot de passe)
@@ -23,14 +25,15 @@
 
 ### **1.4. Gestion des Missions**
 - ✅ Route `GET /missions` (récupérer toutes les missions)
-- ✅ Route `POST /missions` (création d'une mission)
-- ✅ Route `PATCH /missions/:id` (modification d'une mission)
-- ✅ Route `DELETE /missions/:id` (suppression d'une mission)
+- ✅ Route `GET /missions/:id` (récupérer une mission spécifique)
+- ✅ Route `POST /missions` (création d'une mission - réservé aux entreprises)
+- ✅ Route `PATCH /missions/:id` (modification d'une mission - réservé aux entreprises)
+- ✅ Route `DELETE /missions/:id` (suppression d'une mission - réservé aux entreprises)
 
 ### **1.5. Candidatures et Matching**
-- ✅ Route `POST /applications` (postuler à une mission)
-- ✅ Route `GET /applications/user/:id` (voir ses candidatures)
-- ✅ Route `POST /matching` (gestion du matching automatique)
+- 🔄 Route `POST /applications` (postuler à une mission)
+- 🔄 Route `GET /applications/user/:id` (voir ses candidatures)
+- 🔄 Route `POST /matching` (gestion du matching automatique)
 
 ### **1.6. Messagerie**
 - 📨 Route `POST /messages` (envoyer un message)
@@ -39,7 +42,7 @@
 ### **1.7. Paiements et Transactions**
 - 💳 Intégration de Stripe pour les paiements
 - 📜 Route `POST /payments/checkout` (paiement sécurisé)
-- ✅ Route `GET /transactions/:userId` (historique des paiements)
+- 🔄 Route `GET /transactions/:userId` (historique des paiements)
 
 ### **1.8. Avis et Notations**
 - ⭐ Route `POST /reviews` (laisser un avis sur un freelance ou une entreprise)
