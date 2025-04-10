@@ -29,24 +29,37 @@
 - ✅ Route `POST /missions` (création d'une mission - réservé aux entreprises)
 - ✅ Route `PATCH /missions/:id` (modification d'une mission - réservé aux entreprises)
 - ✅ Route `DELETE /missions/:id` (suppression d'une mission - réservé aux entreprises)
+- ✅ Route `PATCH /missions/:id/status` (mise à jour du statut d'une mission)
 
 ### **1.5. Candidatures et Matching**
-- 🔄 Route `POST /applications` (postuler à une mission)
-- 🔄 Route `GET /applications/user/:id` (voir ses candidatures)
-- 🔄 Route `POST /matching` (gestion du matching automatique)
+- ✅ Route `POST /applications` (postuler à une mission)
+- ✅ Route `GET /applications/received` (voir les candidatures reçues - entreprise)
+- ✅ Route `GET /applications/sent` (voir les candidatures envoyées - freelancer)
+- ✅ Route `PATCH /applications/:id/status` (accepter/refuser une candidature)
+- ✅ Route `GET /matching/suggestions` (obtenir les suggestions de missions pour un freelancer)
+- ✅ Route `GET /matching/score/:missionId` (obtenir le score de matching pour une mission)
+- ✅ Système de matching intelligent avec :
+  - Score basé sur les compétences (50%)
+  - Prise en compte du budget (20%)
+  - Localisation (15%)
+  - Expérience (15%)
 
 ### **1.6. Messagerie**
-- 📨 Route `POST /messages` (envoyer un message)
-- 📩 Route `GET /messages/:userId` (récupérer les messages d'un utilisateur)
+- ✅ Route `POST /messages/conversations` (créer une conversation)
+- ✅ Route `GET /messages/conversations` (liste des conversations)
+- ✅ Route `POST /messages` (envoyer un message)
+- ✅ Route `GET /messages/conversations/:id` (messages d'une conversation)
+- ✅ Route `PUT /messages/conversations/:id/read` (marquer comme lu)
 
 ### **1.7. Paiements et Transactions**
-- 💳 Intégration de Stripe pour les paiements
-- 📜 Route `POST /payments/checkout` (paiement sécurisé)
-- 🔄 Route `GET /transactions/:userId` (historique des paiements)
+- 💳 Intégration de Stripe pour les paiements (à venir)
+- 📜 Route `POST /payments/checkout` (paiement sécurisé) (à venir)
+- 🔄 Route `GET /transactions/:userId` (historique des paiements) (à venir)
 
 ### **1.8. Avis et Notations**
-- ⭐ Route `POST /reviews` (laisser un avis sur un freelance ou une entreprise)
-- ⭐ Route `GET /reviews/:userId` (voir les avis d'un utilisateur)
+- ✅ Route `POST /reviews` (laisser un avis)
+- ✅ Route `GET /reviews/user/:userId` (voir les avis d'un utilisateur)
+- ✅ Route `GET /reviews/mission/:missionId` (voir les avis d'une mission)
 
 ---
 
@@ -88,9 +101,10 @@
 ---
 
 🎯 **Objectif :**
-- **Prioriser l'authentification et la gestion des utilisateurs**
-- **Mettre en place les missions et candidatures en priorité**
-- **Implémenter progressivement la messagerie et les paiements**
+- ✅ **Prioriser l'authentification et la gestion des utilisateurs**
+- ✅ **Mettre en place les missions et candidatures en priorité**
+- ✅ **Implémenter la messagerie et les avis**
+- 🔄 **Implémenter le système de paiements**
 
-🔥 **Tout est bien structuré, dis-moi si tu veux modifier ou ajouter des détails !** 😊
+🔥 **Prochaine étape : Développement du Frontend avec Next.js et Tailwind CSS !** 😊
 

@@ -20,4 +20,10 @@ router.delete('/:id', authenticateToken, isCompany, missionController.deleteMiss
 // Nouvelle route pour postuler à une mission
 router.post('/apply', authenticateToken, applicationController.applyToMission as unknown as RequestHandler);
 
+// Route pour mettre à jour le statut d'une mission
+router.patch('/:id/status', authenticateToken, isCompany, missionController.updateMissionStatus as unknown as RequestHandler);
+
+// Route pour mettre à jour le statut d'une candidature
+router.patch('/applications/:id/status', authenticateToken, isCompany, applicationController.updateApplicationStatus as unknown as RequestHandler);
+
 export default router; 

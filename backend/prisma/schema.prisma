@@ -12,22 +12,21 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(freelancer)
-  createdAt DateTime @default(now()) @map("created_at")
-
-  // Relations
-  profile      Profile?
-  missions     Mission[]
-  applications Application[]
-  sentMessages     Message[]    @relation("SentMessages")
-  receivedMessages Message[]    @relation("ReceivedMessages")
-  matchings    Matching[]
-  reviews      Review[]         @relation("UserReviews")
-  givenReviews Review[]         @relation("ReviewerReviews")
+  id            Int           @id @default(autoincrement())
+  email         String        @unique
+  password      String
+  name          String
+  role          Role          @default(freelancer)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+  profile       Profile?
+  missions      Mission[]     @relation("CompanyMissions")
+  applications  Application[] @relation("FreelancerApplications")
+  conversations Conversation[] @relation("ConversationParticipants")
+  sentMessages  Message[]     @relation("MessageSender")
+  matchings     Matching[]
+  reviews       Review[]      @relation("UserReviews")
+  givenReviews  Review[]      @relation("ReviewerReviews")
 
   @@map("users")
 }
@@ -46,32 +45,36 @@ model Profile {
 
 model Mission {
   id          Int      @id @default(autoincrement())
-  userId      Int      @map("user_id")
   title       String
   description String
-  budget      Decimal  @db.Decimal(10, 2)
+  budget      Decimal
   status      MissionStatus @default(pending)
   createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  companyId   Int      @map("company_id")
+  requiredSkills String[] // Compétences requises pour la mission
+  category    String   // Catégorie de la mission (ex: "développement", "design", "marketing", etc.)
 
   // Relations
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company     User     @relation("CompanyMissions", fields: [companyId], references: [id])
   applications Application[]
-  transaction  Transaction?
-  matchings    Matching[]
+  matchings   Matching[]
+  transaction Transaction?
+  reviews     Review[]
 
   @@map("missions")
 }
 
 model Application {
-  id          Int      @id @default(autoincrement())
-  userId      Int      @map("user_id")
-  missionId   Int      @map("mission_id")
-  status      ApplicationStatus @default(sent)
-  dateApplied DateTime @default(now()) @map("date_applied")
+  id           Int             @id @default(autoincrement())
+  status       ApplicationStatus @default(sent)
+  createdAt    DateTime        @default(now()) @map("created_at")
+  freelancerId Int             @map("freelancer_id")
+  missionId    Int             @map("mission_id")
 
   // Relations
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  freelancer   User           @relation("FreelancerApplications", fields: [freelancerId], references: [id])
+  mission      Mission        @relation(fields: [missionId], references: [id])
 
   @@map("applications")
 }
@@ -89,18 +92,27 @@ model Transaction {
   @@map("transactions")
 }
 
+model Conversation {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  participants User[]  @relation("ConversationParticipants")
+  messages    Message[]
+}
+
 model Message {
-  id         Int      @id @default(autoincrement())
-  senderId   Int      @map("sender_id")
-  receiverId Int      @map("receiver_id")
-  content    String
-  timestamp  DateTime @default(now())
+  id             Int          @id @default(autoincrement())
+  content        String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id])
+  senderId       Int
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+  read           Boolean      @default(false)
 
-  // Relations
-  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-
-  @@map("messages")
+  @@index([conversationId])
+  @@index([senderId])
 }
 
 model Matching {
@@ -121,14 +133,18 @@ model Review {
   id         Int      @id @default(autoincrement())
   userId     Int      @map("user_id")
   reviewerId Int      @map("reviewer_id")
-  rating     Int
+  missionId  Int      @map("mission_id")
+  rating     Int      // Note de 1 à 5
   comment    String?
+  type       ReviewType @default(company_to_freelancer)
   date       DateTime @default(now())
 
   // Relations
-  user     User @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
-  reviewer User @relation("ReviewerReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+  user     User    @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
+  reviewer User    @relation("ReviewerReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+  mission  Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
 
+  @@unique([missionId, reviewerId])
   @@map("reviews")
 }
 
@@ -139,8 +155,9 @@ enum Role {
 
 enum MissionStatus {
   pending
-  inprogress
+  in_progress
   completed
+  cancelled
 }
 
 enum ApplicationStatus {
@@ -153,4 +170,9 @@ enum TransactionStatus {
   pending
   paid
   canceled
+}
+
+enum ReviewType {
+  company_to_freelancer
+  freelancer_to_company
 } 

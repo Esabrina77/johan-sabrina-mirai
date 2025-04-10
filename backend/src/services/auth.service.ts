@@ -1,117 +1,65 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import bcrypt from 'bcrypt';
-import { generateToken } from '../utils/jwt';
+import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
-interface RegisterData {
-  name: string;
-  email: string;
-  password: string;
-  role: Role;
-}
-
-export const register = async (data: RegisterData) => {
+export const register = async (email: string, password: string, name: string, role: 'freelancer' | 'company') => {
+  // Vérifier si l'utilisateur existe déjà
   const existingUser = await prisma.user.findUnique({
-    where: { email: data.email },
+    where: { email },
   });
 
   if (existingUser) {
-    throw new Error('Email already exists');
+    throw new Error('Un utilisateur avec cet email existe déjà');
   }
 
-  const hashedPassword = await bcrypt.hash(data.password, 10);
+  // Hasher le mot de passe
+  const hashedPassword = await bcrypt.hash(password, 10);
 
+  // Créer l'utilisateur
   const user = await prisma.user.create({
     data: {
-      name: data.name,
-      email: data.email,
+      email,
       password: hashedPassword,
-      role: data.role,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
+      name,
+      role,
     },
   });
 
-  const token = generateToken(user.id, user.role);
 
-  return {
-    user,
-    token,
-  };
+  // Générer le token JWT
+  const token = jwt.sign(
+    { userId: user.id, role: user.role },
+    JWT_SECRET,
+    { expiresIn: '24h' }
+  );
+
+  return { user, token };
 };
 
-export const login = async ({ email, password }: { email: string; password: string }) => {
+export const login = async (email: string, password: string) => {
+  // Trouver l'utilisateur
   const user = await prisma.user.findUnique({
     where: { email },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      password: true,
-      role: true,
-    },
   });
 
   if (!user) {
-    throw new Error('Invalid credentials');
+    throw new Error('Email ou mot de passe incorrect');
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error('Invalid credentials');
+  // Vérifier le mot de passe
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    throw new Error('Email ou mot de passe incorrect');
   }
 
-  const token = generateToken(user.id, user.role);
+  // Générer le token JWT
+  const token = jwt.sign(
+    { userId: user.id, role: user.role },
+    JWT_SECRET,
+    { expiresIn: '24h' }
+  );
 
-  return {
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
-    token,
-  };
-};
-
-export const verifyEmail = async (code: string) => {
-  // Recherche simplifiée pour éviter l'erreur de colonne
-  const users = await prisma.user.findMany({
-    where: {
-      verificationCode: code,
-      emailVerificationExpires: {
-        gt: new Date(),
-      },
-    },
-    take: 1
-  });
-  
-  const user = users.length > 0 ? users[0] : null;
-
-  if (!user) {
-    throw new Error('Invalid or expired code');
-  }
-
-  const updatedUser = await prisma.user.update({
-    where: { id: user.id },
-    data: {
-      emailVerified: true,
-      verificationCode: null,
-      emailVerificationExpires: null,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      emailVerified: true,
-    },
-  });
-
-  return updatedUser;
+  return { user, token };
 };

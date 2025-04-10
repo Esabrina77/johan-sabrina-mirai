@@ -76,39 +76,26 @@ export const getSentApplications = async (req: Request, res: Response) => {
 // Mettre à jour le statut d'une candidature (pour les entreprises)
 export const updateApplicationStatus = async (req: Request, res: Response) => {
   try {
-    if (!req.user || !req.user.userId) {
-      return res.status(401).json({ error: 'User not authenticated' });
-    }
-
-    const { id } = req.params;
+    const applicationId = parseInt(req.params.id);
     const { status } = req.body;
-    const companyId = req.user.userId;
+    const companyId = (req as any).user.userId;
 
-    // Validation du statut
-    if (!Object.values(ApplicationStatus).includes(status)) {
-      return res.status(400).json({ error: 'Invalid status' });
+    // Vérifier que le statut est valide
+    const validStatuses = ['sent', 'accepted', 'rejected'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ 
+        error: 'Statut invalide. Les statuts valides sont : sent, accepted, rejected' 
+      });
     }
 
-    const result = await applicationService.updateApplicationStatus(
-      parseInt(id),
+    const application = await applicationService.updateApplicationStatus(
+      applicationId,
       status,
       companyId
     );
 
-    return res.status(200).json({
-      message: 'Application status updated successfully',
-      application: result,
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      if (error.message === 'Application not found') {
-        return res.status(404).json({ error: error.message });
-      }
-      if (error.message === 'Unauthorized') {
-        return res.status(403).json({ error: error.message });
-      }
-    }
-    console.error('Error updating application status:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    res.json(application);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
   }
 }; 

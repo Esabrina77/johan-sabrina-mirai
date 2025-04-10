@@ -1,11 +1,11 @@
 import { prisma } from '../lib/prisma';
 import { ApplicationStatus } from '@prisma/client';
 
-export const applyToMission = async (userId: number, missionId: number) => {
+export const applyToMission = async (freelancerId: number, missionId: number) => {
   // Vérifier si l'utilisateur a déjà postulé à cette mission
   const existingApplication = await prisma.application.findFirst({
     where: {
-      userId,
+      freelancerId,
       missionId,
     },
   });
@@ -26,130 +26,124 @@ export const applyToMission = async (userId: number, missionId: number) => {
   }
 
   // Créer la candidature
-  const application = await prisma.application.create({
+  return prisma.application.create({
     data: {
-      userId,
+      freelancerId,
       missionId,
       status: ApplicationStatus.sent,
     },
+  });
+};
+
+export const getFreelancerApplications = async (freelancerId: number) => {
+  return prisma.application.findMany({
+    where: {
+      freelancerId,
+    },
     include: {
+      mission: true,
+    },
+  });
+};
+
+export const getCompanyApplications = async (companyId: number) => {
+  return prisma.application.findMany({
+    where: {
       mission: {
-        select: {
-          title: true,
-          description: true,
-          budget: true,
-        },
+        companyId,
       },
-      user: {
+    },
+    include: {
+      mission: true,
+      freelancer: {
         select: {
+          id: true,
           name: true,
-          email: true,
+          profile: true,
         },
       },
     },
   });
-
-  return application;
 };
 
-// Obtenir les candidatures reçues (pour les entreprises)
-export const getReceivedApplications = async (companyId: number) => {
-  const applications = await prisma.application.findMany({
-    where: {
-      mission: {
-        userId: companyId,
-      },
-    },
+export const updateApplicationStatus = async (applicationId: number, status: 'sent' | 'accepted' | 'rejected', companyId: number) => {
+  // Vérifier que la candidature existe
+  const application = await prisma.application.findUnique({
+    where: { id: applicationId },
     include: {
-      mission: {
-        select: {
-          title: true,
-          description: true,
-          budget: true,
-        },
-      },
-      user: {
-        select: {
-          name: true,
-          email: true,
-        },
-      },
-    },
-    orderBy: {
-      dateApplied: 'desc',
-    },
-  });
-
-  return applications;
-};
-
-// Obtenir les candidatures soumises (pour les freelancers)
-export const getSentApplications = async (freelancerId: number) => {
-  const applications = await prisma.application.findMany({
-    where: {
-      userId: freelancerId,
-    },
-    include: {
-      mission: {
-        select: {
-          title: true,
-          description: true,
-          budget: true,
-        },
-      },
-    },
-    orderBy: {
-      dateApplied: 'desc',
-    },
-  });
-
-  return applications;
-};
-
-// Mettre à jour le statut d'une candidature (pour les entreprises)
-export const updateApplicationStatus = async (
-  applicationId: number,
-  status: ApplicationStatus,
-  companyId: number
-) => {
-  // Vérifier si la candidature existe et appartient à une mission de l'entreprise
-  const application = await prisma.application.findFirst({
-    where: {
-      id: applicationId,
-      mission: {
-        userId: companyId,
-      },
-    },
+      mission: true
+    }
   });
 
   if (!application) {
-    throw new Error('Application not found');
+    throw new Error('Candidature non trouvée');
   }
 
-  // Mettre à jour le statut de la candidature
-  const updatedApplication = await prisma.application.update({
+  // Vérifier que l'entreprise est propriétaire de la mission
+  if (application.mission.companyId !== companyId) {
+    throw new Error('Vous n\'êtes pas autorisé à modifier cette candidature');
+  }
+
+  // Mettre à jour le statut
+  return prisma.application.update({
+    where: { id: applicationId },
+    data: { status },
+    include: {
+      freelancer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true
+        }
+      },
+      mission: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          status: true
+        }
+      }
+    }
+  });
+};
+
+// Obtenir les candidatures reçues pour une entreprise
+export const getReceivedApplications = async (companyId: number) => {
+  return prisma.application.findMany({
     where: {
-      id: applicationId,
+      mission: {
+        companyId: companyId
+      }
     },
-    data: {
-      status,
+    include: {
+      mission: true,
+      freelancer: {
+        include: {
+          profile: true
+        }
+      }
+    }
+  });
+};
+
+// Obtenir les candidatures envoyées par un freelancer
+export const getSentApplications = async (freelancerId: number) => {
+  return prisma.application.findMany({
+    where: {
+      freelancerId: freelancerId
     },
     include: {
       mission: {
-        select: {
-          title: true,
-          description: true,
-          budget: true,
-        },
-      },
-      user: {
-        select: {
-          name: true,
-          email: true,
-        },
-      },
-    },
+        include: {
+          company: {
+            include: {
+              profile: true
+            }
+          }
+        }
+      }
+    }
   });
-
-  return updatedApplication;
 };
