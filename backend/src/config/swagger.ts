@@ -14,6 +14,10 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
+        url: 'https://mirai-api.kaporelo.com',
+        description: 'Production server'
+      },
+      {
         url: 'http://localhost:3009',
         description: 'Development server'
       }
@@ -31,7 +35,7 @@ const options: swaggerJsdoc.Options = {
       bearerAuth: []
     }]
   },
-  apis: ['./src/routes/*.ts'] // Chemin vers vos fichiers de routes
+  apis: ['./src/routes/*.ts', './dist/routes/*.js'] // Ajout du chemin pour les fichiers compilés
 };
 
 export const swaggerSpec = swaggerJsdoc(options); 
