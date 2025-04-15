@@ -9,12 +9,12 @@ import applicationRoutes from './routes/application.routes';
 import matchingRoutes from './routes/matching.routes';
 import messageRoutes from './routes/message.routes';
 import reviewRoutes from './routes/review.routes';
+import app from './app';
 
 // Charger les variables d'environnement
 dotenv.config();
 
 // Initialiser l'application Express
-const app = express();
 const PORT = process.env.PORT || 3009;
 
 // Middlewares
