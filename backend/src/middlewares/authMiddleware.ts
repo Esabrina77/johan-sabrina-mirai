@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/jwt';
-import prisma from '../lib/prisma';
+import { prisma } from '../lib/prisma';
 
 // Étendre l'interface Request pour inclure l'utilisateur
 declare global {
@@ -8,6 +8,7 @@ declare global {
     interface Request {
       user?: {
         userId: number;
+        role: string;
       };
     }
   }
