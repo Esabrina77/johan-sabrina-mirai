@@ -74,7 +74,7 @@ export const sendMessage = async (senderId: number, conversationId: number, cont
 
 // Récupérer les conversations d'un utilisateur
 export const getUserConversations = async (userId: number) => {
-  return prisma.conversation.findMany({
+  const conversations = await prisma.conversation.findMany({
     where: {
       participants: {
         some: {
@@ -94,10 +94,37 @@ export const getUserConversations = async (userId: number) => {
         orderBy: {
           createdAt: 'desc'
         },
-        take: 1
+        include: {
+          sender: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        }
       }
     }
   });
+
+  // Transformer les données pour inclure le dernier message et le compteur de messages non lus
+  return Promise.all(conversations.map(async (conv) => {
+    const unreadCount = await prisma.message.count({
+      where: {
+        conversationId: conv.id,
+        senderId: {
+          not: userId
+        },
+        read: false
+      }
+    });
+
+    return {
+      id: conv.id,
+      participants: conv.participants,
+      lastMessage: conv.messages[0] || null,
+      unreadCount
+    };
+  }));
 };
 
 // Récupérer les messages d'une conversation

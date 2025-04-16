@@ -6,7 +6,7 @@ const options: swaggerJsdoc.Options = {
     info: {
       title: 'MIRAI API Documentation',
       version: '1.0.0',
-      description: 'API documentation for MIRAI platform',
+      description: 'API documentation for MIRAI platform (READ-ONLY in production)',
       contact: {
         name: 'MIRAI Team',
         email: 'contact@mirai.com'
@@ -15,7 +15,7 @@ const options: swaggerJsdoc.Options = {
     servers: [
       {
         url: 'https://mirai-api.kaporelo.com',
-        description: 'Production server'
+        description: 'Production server (READ-ONLY)'
       },
       {
         url: 'http://localhost:3009',
@@ -24,16 +24,27 @@ const options: swaggerJsdoc.Options = {
     ],
     components: {
       securitySchemes: {
+        basicAuth: {
+          type: 'http',
+          scheme: 'basic',
+          description: 'Basic authentication for Swagger UI access'
+        },
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormat: 'JWT'
+          bearerFormat: 'JWT',
+          description: 'JWT token for API endpoints'
         }
       }
     },
-    security: [{
-      bearerAuth: []
-    }]
+    security: [
+      {
+        basicAuth: []
+      },
+      {
+        bearerAuth: []
+      }
+    ]
   },
   apis: ['./src/routes/*.ts', './dist/routes/*.js'] // Ajout du chemin pour les fichiers compilés
 };
