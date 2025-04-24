@@ -1,18 +1,6 @@
 import { Request, Response } from 'express';
 import * as userService from '../services/user.service';
 
-interface UpdateUserData {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phone?: string;
-  bio?: string;
-  skills?: string[];
-  hourlyRate?: number;
-  availability?: 'available' | 'busy' | 'unavailable';
-  location?: string;
-}
-
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const users = await userService.getAllUsers();
@@ -45,37 +33,19 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
   try {
     // @ts-ignore
     const userId = req.user.userId;
-    const updateData: UpdateUserData = req.body;
+    const { name, email } = req.body;
 
-    // Vérifier qu'au moins un champ est fourni
-    if (Object.keys(updateData).length === 0) {
-      res.status(400).json({ error: 'At least one field must be provided' });
+    if (!name && !email) {
+      res.status(400).json({ error: 'At least one field (name or email) is required' });
       return;
     }
 
-    // Valider les champs
-    if (updateData.hourlyRate !== undefined && updateData.hourlyRate < 0) {
-      res.status(400).json({ error: 'Hourly rate cannot be negative' });
-      return;
-    }
-
-    if (updateData.availability && !['available', 'busy', 'unavailable'].includes(updateData.availability)) {
-      res.status(400).json({ error: 'Invalid availability status' });
-      return;
-    }
-
-    const updatedUser = await userService.updateUser(userId, updateData);
+    const updatedUser = await userService.updateUser(userId, { name, email });
     res.status(200).json(updatedUser);
   } catch (error) {
-    if (error instanceof Error) {
-      if (error.message === 'Email already exists') {
-        res.status(409).json({ error: error.message });
-        return;
-      }
-      if (error.message === 'User not found') {
-        res.status(404).json({ error: error.message });
-        return;
-      }
+    if (error instanceof Error && error.message === 'Email already exists') {
+      res.status(409).json({ error: error.message });
+      return;
     }
     console.error('Update profile error:', error);
     res.status(500).json({ error: 'Internal server error' });
