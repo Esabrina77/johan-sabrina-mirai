@@ -3,6 +3,17 @@ import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+interface UpdateUserData {
+  name?: string;
+  email?: string;
+  phone?: string;
+  bio?: string;
+  skills?: string[];
+  hourlyRate?: number;
+  availability?: 'available' | 'busy' | 'unavailable';
+  location?: string;
+}
+
 export const getAllUsers = async () => {
   return prisma.user.findMany({
     select: {
@@ -11,6 +22,7 @@ export const getAllUsers = async () => {
       email: true,
       role: true,
       createdAt: true,
+      updatedAt: true,
     },
   });
 };
@@ -23,11 +35,13 @@ export const getUserById = async (userId: number) => {
       name: true,
       email: true,
       role: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
 };
 
-export const updateUser = async (userId: number, data: { name?: string; email?: string }) => {
+export const updateUser = async (userId: number, data: UpdateUserData) => {
   // Vérifier si l'email existe déjà pour un autre utilisateur
   if (data.email) {
     const existingUser = await prisma.user.findFirst({
@@ -50,6 +64,8 @@ export const updateUser = async (userId: number, data: { name?: string; email?: 
       name: true,
       email: true,
       role: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
 };
