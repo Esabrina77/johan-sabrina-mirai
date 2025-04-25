@@ -1,0 +1,157 @@
+.extranet-header {
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.extranet-nav {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .extranet-nav {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .extranet-nav {
+    padding: 0 2rem;
+  }
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  height: 4rem;
+}
+
+.nav-left {
+  display: flex;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .nav-links {
+    display: flex;
+    margin-left: 1.5rem;
+    gap: 2rem;
+  }
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem;
+  padding-top: 0.25rem;
+  border-bottom: 2px solid transparent;
+  color: #6B7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  border-color: #D1D5DB;
+  color: #374151;
+}
+
+.user-menu {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .user-menu {
+    display: flex;
+    align-items: center;
+    margin-left: 1.5rem;
+  }
+}
+
+.user-menu-container {
+  position: relative;
+  margin-left: 0.75rem;
+}
+
+.user-button {
+  max-width: 20rem;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+}
+
+.user-button:focus {
+  outline: none;
+  ring: 2px;
+  ring-offset: 2px;
+  ring-color: #6366F1;
+}
+
+.avatar {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 9999px;
+}
+
+.avatar-placeholder {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 9999px;
+  background-color: #6366F1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 12rem;
+  padding: 0.25rem 0;
+  background-color: #ffffff;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  ring: 1px;
+  ring-color: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.dropdown-item:hover {
+  background-color: #F3F4F6;
+}
+
+.dropdown-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-button:hover {
+  background-color: #F3F4F6;
+} 
