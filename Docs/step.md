@@ -51,7 +51,7 @@
 - ✅ Route `GET /messages/conversations/:id` (messages d'une conversation)
 - ✅ Route `PUT /messages/conversations/:id/read` (marquer comme lu)
 
-### **1.7. Paiements et Transactions**
+### **1.7. Paiements et Transactions** 
 - 💳 Intégration de Stripe pour les paiements (à venir)
 - 📜 Route `POST /payments/checkout` (paiement sécurisé) (à venir)
 - 🔄 Route `GET /transactions/:userId` (historique des paiements) (à venir)
