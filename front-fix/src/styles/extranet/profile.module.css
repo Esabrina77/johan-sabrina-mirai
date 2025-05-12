@@ -7,12 +7,13 @@
 .title {
   font-size: 2rem;
   font-weight: 600;
-  color: #111827;
+  color: goldenrod;
   margin-bottom: 2rem;
 }
 
 .card {
   background: white;
+  color: black;
   border-radius: 0.5rem;
   padding: 2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -76,22 +77,23 @@
 .submitButton {
   width: 100%;
   padding: 0.75rem;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 0.375rem;
+  border-color: white;
+  color: goldenrod;
+  border: solid 2px goldenrod;
+  border-radius: 10px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .submitButton:hover {
-  background-color: #2563eb;
+  background-color: goldenrod;
+  color:white;
 }
 
 .submitButton:disabled {
-  background-color: #93c5fd;
-  cursor: not-allowed;
+  background-color: goldenrod;
+  color:white;
 }
 
 @media (max-width: 768px) {

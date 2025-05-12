@@ -116,7 +116,7 @@
   position: absolute;
   right: 16px;
   bottom: 16px;
-  background-color: #0ea5e9;
+  background-color: white;
   color: white;
   min-width: 20px;
   height: 20px;
@@ -203,6 +203,7 @@
 }
 
 .messageContent {
+  color: black;
   padding: 6px 7px 14px 9px;
   border-radius: 8px 8px 8px 0px;
   max-width: 300px;	

@@ -46,6 +46,40 @@
   box-sizing: border-box;
 }
 
+h1 {
+color: goldenrod;
+}
+
+h2 {
+  color:goldenrod;
+}
+
+h3 {
+  color: black;
+}
+
+h4 {
+  color: black;
+}
+
+span {
+  color: transparent;
+}
+
+p {
+  color: black;
+}
+
+a:-webkit-any-link {
+  color: white;
+}
+
+a:-webkit-any-link:hover {
+  color: white;
+  border-bottom: solid 2px white;
+  text-decoration: none;
+}
+
 html,
 body {
   padding: 0;

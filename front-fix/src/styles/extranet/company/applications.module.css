@@ -5,7 +5,7 @@
 .title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #111827;
+  color: goldenrod;
   margin-bottom: 2rem;
 }
 
@@ -73,6 +73,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  color: goldenrod;
 }
 
 .freelancerLink {
@@ -112,9 +113,11 @@
 .viewButton {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-color: #2563eb;
+  background-color: goldenrod;
   color: white;
-  border-radius: 0.375rem;
+  border-radius: 10px;
+  border-color: goldenrod;
+  border: solid 2px;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -122,7 +125,10 @@
 }
 
 .viewButton:hover {
-  background-color: #1d4ed8;
+  background-color: goldenrod;
+  color: white;
+  border: solid 2px goldenrod;
+  border-radius: 10px;
 }
 
 .empty {

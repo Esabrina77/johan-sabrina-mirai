@@ -41,6 +41,7 @@
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
+  margin-bottom: 20px;
 }
 
 .statCard:hover {
@@ -48,13 +49,14 @@
 }
 
 .statCard h3 {
-  color: var(--text-secondary);
+  color: black;
   font-size: 1rem;
   margin-bottom: 0.5rem;
+  border-bottom:solid 2px goldenrod ;
 }
 
 .statCard p {
-  color: var(--text-primary);
+  color: black;
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
@@ -148,6 +150,7 @@
 }
 
 .applicationCard {
+  background-color: goldenrod;
   display: flex;
   justify-content: space-between;
   align-items: center;

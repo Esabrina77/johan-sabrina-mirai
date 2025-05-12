@@ -7,7 +7,7 @@
 .container h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #333;
+  color: goldenrod;
   margin-bottom: 2rem;
 }
 
@@ -86,10 +86,10 @@
 .submitButton {
   width: 100%;
   padding: 1rem;
-  background-color: #0066cc;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color:white;
+  color: goldenrod;
+  border: solid 2px goldenrod;
+  border-radius: 10px;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -97,7 +97,8 @@
 }
 
 .submitButton:hover:not(:disabled) {
-  background-color: #0052a3;
+  background-color: goldenrod;
+  color: white;
 }
 
 .submitButton:disabled {

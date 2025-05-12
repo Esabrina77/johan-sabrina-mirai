@@ -125,13 +125,12 @@ export default function ProfilePage() {
             </button>
             <button
               type="button"
+              className={styles.cancelButton}
               onClick={() => {
                 setIsEditing(false);
                 setFormData({});
               }}
-              className={styles.cancelButton}
-            >
-              Annuler
+            >Annuler
             </button>
           </div>
         </form>

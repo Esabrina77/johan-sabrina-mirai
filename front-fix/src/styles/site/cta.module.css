@@ -1,5 +1,5 @@
 .cta {
-  background-color: #4F46E5;
+  background-color: goldenrod;
   color: white;
   padding: 4rem 2rem;
   text-align: center;
@@ -14,6 +14,7 @@
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
   font-weight: 700;
+  color: black;
 }
 
 .cta p {
@@ -25,9 +26,9 @@
 .ctaButton {
   display: inline-block;
   padding: 1rem 2rem;
-  background-color: white;
-  color: #4F46E5;
-  border-radius: 0.5rem;
+  color: white;
+  border: solid 2px white;
+  border-radius: 10px;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -36,4 +37,6 @@
 .ctaButton:hover {
   background-color: #F3F4F6;
   transform: translateY(-2px);
+  text-decoration: none;
+  color: black;
 } 

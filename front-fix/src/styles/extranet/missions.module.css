@@ -13,7 +13,7 @@
 
 .header h1 {
   font-size: 2rem;
-  color: #333;
+  color: goldenrod;
   margin: 0;
 }
 
@@ -107,8 +107,10 @@
 .viewButton {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: #007bff;
+  background: goldenrod;
   color: white;
+  border: solid 2px goldenrod;
+  border-radius: 10px;
   text-decoration: none;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -117,7 +119,8 @@
 }
 
 .viewButton:hover {
-  background: #0056b3;
+  background: goldenrod;
+  color: white;
 }
 
 @media (max-width: 768px) {

@@ -1,5 +1,5 @@
 .footer {
-  background-color: #1F2937;
+  background-color: black;
   color: white;
   padding: 4rem 2rem 2rem;
 }
@@ -16,7 +16,7 @@
 .footerSection h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #F3F4F6;
+  color: goldenrod;
 }
 
 .footerSection h4 {
@@ -33,6 +33,7 @@
 .footerSection ul {
   list-style: none;
   padding: 0;
+  color: white;
 }
 
 .footerSection ul li {
@@ -40,20 +41,22 @@
 }
 
 .footerSection a {
-  color: #9CA3AF;
+  color: white;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .footerSection a:hover {
-  color: white;
+  color: goldenrod;
+  border-bottom: solid 1px goldenrod;
+  transition: transform 0.3s ease;
 }
 
 .footerBottom {
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 2rem;
-  border-top: 1px solid #374151;
+  border-top: 1px solid goldenrod;
   text-align: center;
-  color: #9CA3AF;
+  color: goldenrod;
 } 

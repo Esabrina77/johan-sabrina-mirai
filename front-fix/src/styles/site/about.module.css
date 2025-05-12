@@ -5,8 +5,7 @@
 }
 
 .hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('/images/about-hero.jpg') center/cover;
+  background: white;
   color: white;
   padding: 6rem 2rem;
   text-align: center;
@@ -42,13 +41,13 @@
 .story h2 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
-  color: #1F2937;
+  color: goldenrod;
 }
 
 .story p {
   font-size: 1.25rem;
   line-height: 1.8;
-  color: #4B5563;
+  color: white;
 }
 
 .values {
@@ -59,7 +58,7 @@
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 3rem;
-  color: #1F2937;
+  color: goldenrod;
 }
 
 .valuesGrid {
@@ -83,7 +82,7 @@
 .valueCard h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #4F46E5;
+  color: goldenrod;
 }
 
 .valueCard p {
@@ -99,7 +98,7 @@
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 3rem;
-  color: #1F2937;
+  color: goldenrod;
 }
 
 .teamGrid {
@@ -129,17 +128,17 @@
 .teamMember h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  color: #1F2937;
+  color: goldenrod;
 }
 
 .teamMember p {
-  color: #6B7280;
+  color: white;
 }
 
 .cta {
   text-align: center;
   padding: 4rem 2rem;
-  background: #4F46E5;
+  background: goldenrod;
   color: white;
   border-radius: 1rem;
 }
@@ -147,6 +146,7 @@
 .cta h2 {
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
+  color: black;
 }
 
 .cta p {
@@ -171,13 +171,15 @@
 }
 
 .primaryButton {
-  background: white;
-  color: #4F46E5;
+  background: transparent;
+  border: 2px solid white;
+  color: white;
 }
 
 .primaryButton:hover {
-  background: #F3F4F6;
+  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
+  color: white;
 }
 
 .secondaryButton {
@@ -189,4 +191,5 @@
 .secondaryButton:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
+  color: white;
 } 
