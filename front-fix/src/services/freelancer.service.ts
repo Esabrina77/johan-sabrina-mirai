@@ -6,29 +6,44 @@ export interface Freelancer {
   id: number;
   name: string;
   email: string;
-  title?: string;
+  role: 'freelancer';
+  details?: {
+    skills?: string[];
+    location?: string;
   description?: string;
-  skills?: string[];
   hourlyRate?: number;
-  availability?: 'available' | 'busy' | 'unavailable';
-  createdAt: string;
-  updatedAt: string;
+    experience?: {
+      years?: number;
+      projects?: number;
+      certifications?: number;
+    };
+    [key: string]: any;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface UpdateFreelancerData {
   name?: string;
   email?: string;
-  title?: string;
-  description?: string;
+  details?: {
   skills?: string[];
-  hourlyRate?: number;
-  availability?: 'available' | 'busy' | 'unavailable';
+  };
 }
 
 const freelancerService = {
   getProfile: async (): Promise<Freelancer> => {
-    const response = await api.get<Freelancer>('/api/users/profile');
-    return response.data;
+    const response = await api.get('/api/users/profile');
+    const data = response.data as any;
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      details: data.profile?.details || {},
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    };
   },
 
   getFreelancerById: async (id: number): Promise<Freelancer> => {
@@ -37,8 +52,17 @@ const freelancerService = {
   },
 
   updateProfile: async (data: UpdateFreelancerData): Promise<Freelancer> => {
-    const response = await api.put<Freelancer>('/api/users/profile', data);
-    return response.data;
+    const response = await api.put('/api/users/profile', data);
+    const resData = response.data as any;
+    return {
+      id: resData.id,
+      name: resData.name,
+      email: resData.email,
+      role: resData.role,
+      details: resData.profile?.details || {},
+      createdAt: resData.createdAt,
+      updatedAt: resData.updatedAt,
+    };
   },
 
   getMissions: async (): Promise<Mission[]> => {

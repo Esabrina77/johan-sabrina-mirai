@@ -1,86 +1,74 @@
 .container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .header {
   margin-bottom: 2rem;
 }
 
-.backLink {
-  display: inline-block;
-  color: #666;
-  text-decoration: none;
-  margin-bottom: 1rem;
-  transition: color 0.2s;
-}
-
-.backLink:hover {
-  color: var(--primary-color);
-}
-
-.titleContainer {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.titleContainer h1 {
-  margin: 0;
+.title {
   font-size: 2rem;
-  color: goldenrod;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.missionCard {
+  background: rgba(40, 44, 80, 0.95);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  margin-bottom: 2rem;
+}
+
+.missionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.missionTitle {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .status {
+  display: inline-flex;
+  align-items: center;
   padding: 0.5rem 1rem;
-  border-radius: 20px;
-  color: white;
-  font-size: 0.9rem;
+  border-radius: 0.7rem;
+  font-size: 0.875rem;
   font-weight: 500;
+  border: 1px solid rgba(106, 130, 251, 0.2);
 }
 
-.editButton {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+.open {
+  background: rgba(106, 130, 251, 0.2);
+  color: #6a82fb;
 }
 
-.editButton:hover {
-  background-color: var(--primary-dark);
+.inProgress {
+  background: rgba(67, 233, 123, 0.2);
+  color: #43e97b;
 }
 
-.content {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+.completed {
+  background: rgba(252, 92, 125, 0.2);
+  color: #fc5c7d;
 }
 
-.section {
-  padding: 2rem;
-  border-bottom: 1px solid #eee;
-}
-
-.section:last-child {
-  border-bottom: none;
-}
-
-.section h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.2rem;
-  color: goldenrod;
-}
-
-.details {
+.missionDetails {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .detail {
@@ -89,91 +77,119 @@
   gap: 0.5rem;
 }
 
-.detail span {
+.detailLabel {
+  color: #b2b7ff;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #666;
 }
 
-.detail p {
-  margin: 0;
-  color: #333;
+.detailValue {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.description {
+  color: #b2b7ff;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(40, 44, 80, 0.7);
+  border-radius: 0.7rem;
+  border: 1px solid rgba(106, 130, 251, 0.2);
 }
 
 .skills {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .skill {
   padding: 0.5rem 1rem;
-  background-color: #f0f0f0;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  color: #333;
+  background: rgba(106, 130, 251, 0.2);
+  color: #6a82fb;
+  border-radius: 0.7rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid rgba(106, 130, 251, 0.3);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.editButton,
+.deleteButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  border: none;
+}
+
+.editButton {
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  color: white;
+  box-shadow: 0 4px 15px rgba(106, 130, 251, 0.3);
+}
+
+.deleteButton {
+  background: rgba(252, 92, 125, 0.1);
+  color: #fc5c7d;
+  border: 1px solid rgba(252, 92, 125, 0.2);
+}
+
+.editButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(106, 130, 251, 0.4);
+}
+
+.deleteButton:hover {
+  background: rgba(252, 92, 125, 0.2);
+  transform: translateY(-2px);
 }
 
 .loading {
   text-align: center;
   padding: 2rem;
-  color: #666;
+  color: #b2b7ff;
 }
 
 .error {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2rem;
   text-align: center;
-  background-color: #fff2f2;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.error p {
-  color: #d63031;
-  margin-bottom: 1.5rem;
-}
-
-.backButton {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: #666;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-}
-
-.backButton:hover {
-  background-color: #555;
-}
-
-.noApplications {
-  color: #666;
-  font-style: italic;
+  padding: 2rem;
+  color: #fc5c7d;
+  background: rgba(252, 92, 125, 0.1);
+  border-radius: 0.7rem;
+  border: 1px solid rgba(252, 92, 125, 0.2);
 }
 
 @media (max-width: 768px) {
   .container {
-    margin: 1rem;
+    padding: 1rem;
   }
 
-  .titleContainer {
+  .missionHeader {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .titleContainer h1 {
-    font-size: 1.5rem;
-  }
-
-  .section {
-    padding: 1.5rem;
-  }
-
-  .details {
-    grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .missionDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .editButton,
+  .deleteButton {
+    width: 100%;
   }
 } 

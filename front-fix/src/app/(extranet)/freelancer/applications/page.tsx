@@ -54,6 +54,9 @@ export default function ApplicationsPage() {
   if (loading) return <div className={styles.loading}>Chargement...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
 
+  // Log pour debug : voir les statuts reçus
+  console.log('Applications reçues:', applications);
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Mes candidatures</h1>

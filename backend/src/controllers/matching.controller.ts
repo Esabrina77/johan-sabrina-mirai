@@ -50,10 +50,17 @@ export const getMatchingScore = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid mission ID' });
     }
 
+    console.log('\n=== APPEL GET MATCHING SCORE ===');
+    console.log('Params reçus:', { userId, missionId });
+
     const score = await matchingService.getMatchingScore(userId, missionId);
-    return res.status(200).json({ score });
+
+    console.log('Score calculé:', score);
+    console.log('=== FIN APPEL GET MATCHING SCORE ===\n');
+
+    res.json({ score });
   } catch (error) {
-    console.error('Error getting matching score:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error('Erreur dans getMatchingScore:', error);
+    res.status(500).json({ error: 'Erreur lors du calcul du score de matching' });
   }
 }; 

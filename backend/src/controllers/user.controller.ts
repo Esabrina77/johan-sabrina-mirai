@@ -15,7 +15,7 @@ export const getProfile = async (req: Request, res: Response): Promise<void> => 
   try {
     // @ts-ignore
     const userId = req.user.userId;
-    const user = await userService.getUserById(userId);
+    const user = await userService.getFullProfileByUserId(userId);
 
     if (!user) {
       res.status(404).json({ error: 'User not found' });
@@ -33,15 +33,15 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
   try {
     // @ts-ignore
     const userId = req.user.userId;
-    const { name, email } = req.body;
+    const { name, email, details } = req.body;
 
-    if (!name && !email) {
-      res.status(400).json({ error: 'At least one field (name or email) is required' });
+    if (!name && !email && !details) {
+      res.status(400).json({ error: 'At least one field (name, email, or details) is required' });
       return;
     }
 
-    const updatedUser = await userService.updateUser(userId, { name, email });
-    res.status(200).json(updatedUser);
+    const updatedProfile = await userService.updateFullProfile(userId, { name, email, details });
+    res.status(200).json(updatedProfile);
   } catch (error) {
     if (error instanceof Error && error.message === 'Email already exists') {
       res.status(409).json({ error: error.message });

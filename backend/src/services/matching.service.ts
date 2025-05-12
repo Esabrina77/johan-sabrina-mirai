@@ -20,6 +20,14 @@ interface FreelancerMatch {
   profile: any;
 }
 
+interface ProfileDetails {
+  skills?: string[];
+  [key: string]: any;
+}
+
+// Cache simple pour les scores
+const scoreCache = new Map<string, number>();
+
 // Obtenir les suggestions de missions pour un freelancer
 export const getMissionSuggestions = async (freelancerId: number): Promise<MatchingScore[]> => {
   // Récupérer toutes les missions disponibles
@@ -106,7 +114,55 @@ export const getFreelancerSuggestions = async (missionId: number): Promise<Freel
 
 // Obtenir le score de matching pour une mission spécifique
 export const getMatchingScore = async (freelancerId: number, missionId: number): Promise<number> => {
-  const { score } = await calculateMatchingScore(freelancerId, missionId);
+  const cacheKey = `${freelancerId}-${missionId}`;
+  
+  // Retourner le score en cache s'il existe
+  if (scoreCache.has(cacheKey)) {
+    return scoreCache.get(cacheKey)!;
+  }
+
+  // Récupérer les informations du freelancer
+  const freelancer = await prisma.user.findUnique({
+    where: { id: freelancerId },
+    include: { profile: true },
+  });
+
+  const profileDetails = freelancer?.profile?.details as ProfileDetails;
+  if (!profileDetails?.skills) {
+    return 0;
+  }
+
+  // Récupérer les informations de la mission
+  const mission = await prisma.mission.findUnique({
+    where: { id: missionId },
+  });
+
+  if (!mission?.requiredSkills) {
+    return 0;
+  }
+
+  // Normaliser les compétences (minuscules et triées)
+  const freelancerSkills = profileDetails.skills
+    .map((s: string) => s.toLowerCase().trim())
+    .sort();
+  
+  const requiredSkills = mission.requiredSkills
+    .map((s: string) => s.toLowerCase().trim())
+    .sort();
+
+  // Calculer le score basé uniquement sur les compétences
+  const matchedSkills = requiredSkills.filter(skill => 
+    freelancerSkills.some((freelancerSkill: string) => 
+      freelancerSkill.includes(skill) || skill.includes(freelancerSkill)
+    )
+  );
+
+  // Score = (nombre de compétences matchées / nombre total de compétences requises) * 100
+  const score = Math.round((matchedSkills.length / requiredSkills.length) * 100);
+
+  // Mettre en cache
+  scoreCache.set(cacheKey, score);
+
   return score;
 };
 
@@ -116,43 +172,51 @@ async function calculateMatchingScore(freelancerId: number, missionId: number): 
   matchedSkills: string[];
   missingSkills: string[];
 }> {
+  console.log('\n=== DÉBUT CALCUL MATCHING ===');
+  console.log(`Freelancer ID: ${freelancerId}, Mission ID: ${missionId}`);
+
   // Récupérer les informations du freelancer
   const freelancer = await prisma.user.findUnique({
-    where: {
-      id: freelancerId,
-    },
-    include: {
-      profile: true,
-    },
+    where: { id: freelancerId },
+    include: { profile: true },
   });
 
   if (!freelancer?.profile?.details) {
+    console.log('❌ Pas de profil freelancer trouvé');
     return { score: 0, matchedSkills: [], missingSkills: [] };
   }
 
   // Récupérer les informations de la mission
   const mission = await prisma.mission.findUnique({
-    where: {
-      id: missionId,
-    },
+    where: { id: missionId },
     include: {
-      company: {
-        include: {
-          profile: true
-        }
-      }
+      company: { include: { profile: true } }
     }
   });
 
   if (!mission?.company?.profile?.details) {
+    console.log('❌ Pas de profil mission trouvé');
     return { score: 0, matchedSkills: [], missingSkills: [] };
   }
 
+  // Forcer la casse et trier les compétences pour garantir la stabilité
+  const requiredSkills = (mission.requiredSkills || []).map(s => s.toLowerCase()).sort();
+  const freelancerSkills = extractSkillsFromProfile(freelancer.profile.details).map(s => s.toLowerCase()).sort();
+
+  console.log('\n=== COMPÉTENCES ===');
+  console.log('Compétences requises:', requiredSkills);
+  console.log('Compétences freelancer:', freelancerSkills);
+
   // Calculer les différents scores
   const { score: skillsScore, matchedSkills, missingSkills } = calculateSkillsMatch(
-    mission.requiredSkills.map(skill => skill.toLowerCase()),
-    extractSkillsFromProfile(freelancer.profile.details)
+    requiredSkills,
+    freelancerSkills
   );
+
+  console.log('\n=== SCORES ===');
+  console.log('Score compétences:', skillsScore);
+  console.log('Compétences matchées:', matchedSkills);
+  console.log('Compétences manquantes:', missingSkills);
 
   const budgetScore = calculateBudgetScore(mission.budget);
   const locationScore = calculateLocationScore(
@@ -161,13 +225,22 @@ async function calculateMatchingScore(freelancerId: number, missionId: number): 
   );
   const experienceScore = calculateExperienceScore(freelancer.profile.details);
 
+  console.log('Score budget:', budgetScore);
+  console.log('Score localisation:', locationScore);
+  console.log('Score expérience:', experienceScore);
+
   // Calculer le score final avec les nouveaux poids
-  const finalScore = (
-    (skillsScore * 0.5) +      // Compétences (50%)
+  const finalScore = Math.round(
+    ((skillsScore * 0.5) +      // Compétences (50%)
     (budgetScore * 0.2) +      // Budget (20%)
     (locationScore * 0.15) +   // Localisation (15%)
-    (experienceScore * 0.15)   // Expérience (15%)
-  );
+    (experienceScore * 0.15))  // Expérience (15%)
+    * 100
+  ) / 100; // Arrondir à 2 décimales
+
+  console.log('\n=== SCORE FINAL ===');
+  console.log('Score final:', finalScore);
+  console.log('=== FIN CALCUL MATCHING ===\n');
 
   return { score: finalScore, matchedSkills, missingSkills };
 }
@@ -239,9 +312,16 @@ function calculateSkillsMatch(requiredSkills: string[], freelancerSkills: string
   const missingSkills = requiredSkills.filter(skill => 
     !matchedSkills.includes(skill)
   );
+
+  const score = matchedSkills.length / requiredSkills.length;
+  
+  console.log('\n=== DÉTAIL MATCHING COMPÉTENCES ===');
+  console.log('Nombre de compétences requises:', requiredSkills.length);
+  console.log('Nombre de compétences matchées:', matchedSkills.length);
+  console.log('Score calculé:', score);
   
   return {
-    score: matchedSkills.length / requiredSkills.length,
+    score,
     matchedSkills,
     missingSkills
   };

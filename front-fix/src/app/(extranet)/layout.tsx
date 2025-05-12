@@ -29,7 +29,9 @@ export default function ExtranetLayout({
     <div className={styles.layout}>
       <Sidebar />
       <main className={styles.main}>
-        {children}
+        <div className={styles.content}>
+          {children}
+        </div>
       </main>
     </div>
   );

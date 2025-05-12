@@ -1,90 +1,275 @@
-.dashboard {
+.container {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: calc(100vh - 4rem);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  grid-column: 1 / -1;
 }
 
-.header h1 {
-  font-size: 2rem;
-  font-weight: bold;
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
 }
 
-.createButton {
-  background-color: #0066cc;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  text-decoration: none;
+.subtitle {
+  color: #b2b7ff;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.createButton:hover {
-  background-color: #0052a3;
-}
-
-.stats {
+.statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+  grid-column: 1 / -1;
 }
 
 .statCard {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  background: rgba(40, 44, 80, 0.95);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
 }
 
-.statCard h3 {
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+  border-color: rgba(106, 130, 251, 0.4);
+}
+
+.statCard:hover::before {
+  opacity: 1;
+}
+
+.statTitle {
+  color: #b2b7ff;
   font-size: 1rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-  border-bottom: solid 2px goldenrod;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.statCard p {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+.statValue {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1;
 }
 
-.quickLinks {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+.statDescription {
+  color: #b2b7ff;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
-.quickLink {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.actions {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-column: 1 / -1;
+}
+
+.actionButton {
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
   text-decoration: none;
-  color: inherit;
-  transition: transform 0.2s;
-  margin-top: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 200px;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(106, 130, 251, 0.3);
 }
 
-.quickLink:hover {
+.actionButton:hover {
   transform: translateY(-2px);
-  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(106, 130, 251, 0.4);
 }
 
-.quickLink h3 {
-  font-size: 1.25rem;
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  background: rgba(40, 44, 80, 0.95);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+  border-color: rgba(106, 130, 251, 0.4);
+}
+
+.sectionTitle {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.item {
+  background: rgba(40, 44, 80, 0.7);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.item:hover {
+  transform: translateX(5px);
+  border-color: rgba(106, 130, 251, 0.4);
+  background: rgba(40, 44, 80, 0.9);
+}
+
+.itemTitle {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
-  color: goldenrod;
 }
 
-.quickLink p {
-  color: #666;
-  font-size: 0.9rem;
-} 
+.itemDescription {
+  color: #b2b7ff;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #b2b7ff;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  grid-column: 1 / -1;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #fc5c7d;
+  background: rgba(252, 92, 125, 0.1);
+  border-radius: 1rem;
+  border: 1px solid rgba(252, 92, 125, 0.2);
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+}

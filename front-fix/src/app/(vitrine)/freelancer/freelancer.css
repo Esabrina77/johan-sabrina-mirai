@@ -1,0 +1,50 @@
+.freelancer-futuristic {
+  background: linear-gradient(120deg, #23243a 0%, #3a3d5c 100%);
+  min-height: 70vh;
+  padding: 3rem 0 4rem 0;
+  color: #fff;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  margin: 2rem 2vw;
+}
+.futuristic-title {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(90deg, #43e97b, #38f9d7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+.futuristic-subtitle {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #b2fff7;
+  margin-bottom: 2.5rem;
+}
+.freelancer-benefits {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.benefit-card {
+  background: rgba(40, 44, 80, 0.95);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px 0 rgba(67, 233, 123, 0.15);
+  padding: 2rem 2.5rem 1.5rem 2.5rem;
+  min-width: 220px;
+  max-width: 320px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.benefit-card h2 {
+  color: #43e97b;
+  font-size: 1.2rem;
+  margin-bottom: 0.7rem;
+}
+.benefit-card p {
+  color: #b2fff7;
+  font-size: 1rem;
+  margin: 0;
+} 

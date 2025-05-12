@@ -55,10 +55,15 @@ const applicationService = {
   // Postuler à une mission
   apply: async (data: { missionId: number; message: string }): Promise<Application> => {
     try {
-      const response = await api.post<Application>('/api/applications', data);
+      console.log('Envoi de la candidature:', data);
+      const response = await api.post<Application>('/api/applications', {
+        missionId: data.missionId,
+        message: data.message
+      });
+      console.log('Réponse de la candidature:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error applying to mission:', error);
+      console.error('Erreur lors de la candidature:', error);
       throw error;
     }
   },
@@ -92,24 +97,6 @@ const applicationService = {
         status: response.status,
         data: response.data
       });
-
-      // Créer une conversation avec l'entreprise
-      try {
-        const conversationResponse = await api.post<ConversationResponse>('/api/messages/conversations', {
-          missionId: data.missionId
-        });
-
-        // Envoyer le message initial
-        if (conversationResponse.data.id) {
-          await messageService.sendMessage({
-            conversationId: conversationResponse.data.id,
-            content: data.message
-          });
-        }
-      } catch (error) {
-        console.error('Error creating conversation:', error);
-        // On ne bloque pas le processus si la création de la conversation échoue
-      }
       
       return response.data;
     } catch (error: unknown) {

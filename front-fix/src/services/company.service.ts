@@ -6,15 +6,50 @@ export interface Company {
   id: number;
   name: string;
   email: string;
+  role: 'company';
+  details?: {
+    website?: string;
+    location?: string;
   description?: string;
-  createdAt: string;
-  updatedAt: string;
+    specialties?: string[];
+    foundedYear?: number;
+    headquarters?: string;
+    size?: string;
+    industry?: string;
+    socialMedia?: {
+      linkedin?: string;
+      twitter?: string;
+      facebook?: string;
+      [key: string]: any;
+    };
+    legalStatus?: string;
+    [key: string]: any;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface UpdateCompanyData {
   name?: string;
   email?: string;
+  details?: {
+    website?: string;
+    location?: string;
   description?: string;
+    specialties?: string[];
+    foundedYear?: number;
+    headquarters?: string;
+    size?: string;
+    industry?: string;
+    socialMedia?: {
+      linkedin?: string;
+      twitter?: string;
+      facebook?: string;
+      [key: string]: any;
+    };
+    legalStatus?: string;
+    [key: string]: any;
+  };
 }
 
 export interface DashboardStats {
@@ -27,13 +62,21 @@ export interface DashboardStats {
 
 const companyService = {
   getProfile: async (): Promise<Company> => {
-    const response = await api.get<Company>('/api/users/profile');
-    return response.data;
+    const response = await api.get('/api/users/profile');
+    const data = response.data as any;
+    return {
+      ...data,
+      details: data.profile?.details || {},
+    };
   },
 
   updateProfile: async (data: UpdateCompanyData): Promise<Company> => {
-    const response = await api.put<Company>('/api/users/profile', data);
-    return response.data;
+    const response = await api.put('/api/users/profile', data);
+    const resData = response.data as any;
+    return {
+      ...resData,
+      details: resData.profile?.details || {},
+    };
   },
 
   getMissions: async (): Promise<Mission[]> => {

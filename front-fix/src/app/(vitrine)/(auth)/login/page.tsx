@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import styles from '@/styles/site/auth.module.css';
+import './login.css';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -29,51 +29,31 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.authContainer}>
-      <div className={styles.authBox}>
-        <div className={styles.authHeader}>
-          <h1 className={styles.authTitle}>Connexion</h1>
-          <p className={styles.authSubtitle}>
-            Connectez-vous pour accéder à votre espace
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className={styles.authForm}>
-          <div className={styles.formGroup}>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              required
-              className={styles.inputField}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <input
-              type="password"
-              name="password"
-              placeholder="Mot de passe"
-              required
-              className={styles.inputField}
-            />
-          </div>
-
-          {error && <div className={styles.errorMessage}>{error}</div>}
-
-          <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={isLoading}
-          >
+    <div className="auth-futuristic-bg">
+      <div className="auth-card">
+        <h1 className="auth-title">Connexion</h1>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Mot de passe"
+            required
+          />
+          {error && <div className="error-message">{error}</div>}
+          <button type="submit" disabled={isLoading}>
             {isLoading ? 'Connexion...' : 'Se connecter'}
           </button>
         </form>
-
-        <p className={styles.switchLink}>
-          Pas encore de compte ?{' '}
+        <div className="auth-links">
           <a href="/register">Créer un compte</a>
-        </p>
+       
+        </div>
       </div>
     </div>
   );

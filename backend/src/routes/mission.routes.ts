@@ -18,7 +18,7 @@ router.patch('/:id', authenticateToken, isCompany, missionController.updateMissi
 router.delete('/:id', authenticateToken, isCompany, missionController.deleteMission as unknown as RequestHandler);
 
 // Nouvelle route pour postuler à une mission
-router.post('/apply', authenticateToken, applicationController.applyToMission as unknown as RequestHandler);
+router.post('/apply', authenticateToken, applicationController.apply as unknown as RequestHandler);
 
 // Route pour mettre à jour le statut d'une mission
 router.patch('/:id/status', authenticateToken, isCompany, missionController.updateMissionStatus as unknown as RequestHandler);

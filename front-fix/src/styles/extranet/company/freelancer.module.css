@@ -1,5 +1,7 @@
 .container {
   padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .backButton {
@@ -25,40 +27,90 @@
 
 .header {
   margin-bottom: 2rem;
-  text-align: center;
-}
-
-.name {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 0.5rem;
 }
 
 .title {
-  font-size: 1.25rem;
-  color: #4b5563;
-  margin: 0;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.section {
-  background-color: white;
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  background: rgba(40, 44, 80, 0.7);
+  border-radius: 0.7rem;
+  color: #b2b7ff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filterButton:hover {
+  background: rgba(106, 130, 251, 0.1);
+  transform: translateY(-2px);
+}
+
+.filterButton.active {
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 15px rgba(106, 130, 251, 0.3);
+}
+
+.freelancerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.freelancerCard {
+  background: rgba(40, 44, 80, 0.95);
+  border-radius: 1rem;
   padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  transition: all 0.3s ease;
 }
 
-.section h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #111827;
+.freelancerCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(106, 130, 251, 0.4);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+}
+
+.freelancerHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 
-.section p {
-  color: #4b5563;
-  line-height: 1.5;
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(106, 130, 251, 0.3);
+}
+
+.freelancerInfo h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem;
+}
+
+.freelancerInfo p {
+  color: #b2b7ff;
+  font-size: 0.9rem;
   margin: 0;
 }
 
@@ -66,110 +118,95 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin: 1rem 0;
 }
 
 .skill {
-  background-color: #e5e7eb;
-  color: #374151;
   padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-}
-
-.applications {
-  margin-top: 2rem;
-}
-
-.applications h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 1rem;
-}
-
-.applicationCard {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
-}
-
-.applicationHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.applicationHeader h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0;
-}
-
-.date {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.message {
-  background-color: #f3f4f6;
-  padding: 1rem;
-  border-radius: 0.375rem;
-  color: #374151;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 1rem;
-}
-
-.actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-}
-
-.acceptButton,
-.rejectButton {
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
+  background: rgba(106, 130, 251, 0.2);
+  color: #6a82fb;
+  border-radius: 0.7rem;
   font-size: 0.875rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+  border: 1px solid rgba(106, 130, 251, 0.3);
+}
+
+.matchScore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(106, 130, 251, 0.2);
+  color: #6a82fb;
+  border-radius: 0.7rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid rgba(106, 130, 251, 0.3);
+  margin-top: 1rem;
+}
+
+.contactButton {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  color: white;
+  text-decoration: none;
+  border-radius: 0.7rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: center;
   border: none;
+  box-shadow: 0 4px 15px rgba(106, 130, 251, 0.3);
+  margin-top: 1rem;
+  width: 100%;
 }
 
-.acceptButton {
-  background-color: #059669;
-  color: white;
+.contactButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(106, 130, 251, 0.4);
 }
 
-.acceptButton:hover {
-  background-color: #047857;
-}
-
-.rejectButton {
-  background-color: #dc2626;
-  color: white;
-}
-
-.rejectButton:hover {
-  background-color: #b91c1c;
-}
-
-.acceptButton:disabled,
-.rejectButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #b2b7ff;
 }
 
 .error {
   text-align: center;
-  padding: 1rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border-radius: 0.5rem;
-  margin-top: 1rem;
+  padding: 2rem;
+  color: #fc5c7d;
+  background: rgba(252, 92, 125, 0.1);
+  border-radius: 0.7rem;
+  border: 1px solid rgba(252, 92, 125, 0.2);
+}
+
+.noResults {
+  text-align: center;
+  padding: 2rem;
+  color: #b2b7ff;
+  background: rgba(40, 44, 80, 0.7);
+  border-radius: 0.7rem;
+  border: 1px solid rgba(106, 130, 251, 0.2);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .filterButton {
+    flex: 1;
+    min-width: calc(50% - 0.5rem);
+    text-align: center;
+  }
+
+  .freelancerGrid {
+    grid-template-columns: 1fr;
+  }
 } 

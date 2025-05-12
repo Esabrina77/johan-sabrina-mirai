@@ -19,16 +19,17 @@ const MainHeader: React.FC = () => {
         
         <nav className="main-nav">
           <ul>
-            <li><Link href="/missions">Missions</Link></li>
-            <li><Link href="/freelancers">Freelancers</Link></li>
-            <li><Link href="/about">About</Link></li>
+            <li><Link href="/about">À propos</Link></li>
+            <li><Link href="/blog">Blog</Link></li>
+            <li><Link href="/freelancer">Freelances</Link></li>
+            <li><Link href="/company">Entreprises</Link></li>
             <li><Link href="/contact">Contact</Link></li>
           </ul>
         </nav>
 
         <div className="auth-buttons">
-          <Link href="/login" className="btn btn-secondary">Login</Link>
-          <Link href="/register" className="btn btn-primary">Register</Link>
+          <Link href="/login" className="btn btn-secondary">Connexion</Link>
+          <Link href="/register" className="btn btn-primary">Inscription</Link>
         </div>
       </div>
     </header>

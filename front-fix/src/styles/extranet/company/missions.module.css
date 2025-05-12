@@ -11,73 +11,130 @@
   margin-bottom: 2rem;
 }
 
-.header h1 {
+.title {
   font-size: 2rem;
-  font-weight: bold;
-  color: goldenrod;
+  margin: 0;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .createButton {
-  background-color: goldenrod;
-  color: white;
   padding: 0.75rem 1.5rem;
-  border: solid 2px goldenrod;
-  border-radius: 10px;
-  text-decoration: none;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  color: white;
+  border: none;
+  border-radius: 0.7rem;
   font-weight: 500;
-  transition: background-color 0.2s;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(106, 130, 251, 0.3);
 }
 
 .createButton:hover {
-  background-color: goldenrod;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(106, 130, 251, 0.4);
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  background: rgba(40, 44, 80, 0.95);
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  border-radius: 0.7rem;
+  color: #b2b7ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+}
+
+.filterButton:hover {
+  background: rgba(106, 130, 251, 0.2);
+  color: #fff;
+}
+
+.filterButton.active {
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
   color: white;
+  border: none;
 }
 
-.loading {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
-}
-
-.missionsList {
+.missionsGrid {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
 .missionCard {
-  background-color: white;
-  border-radius: 8px;
+  background: rgba(40, 44, 80, 0.95);
+  border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(106, 130, 251, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.missionCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+  border-color: rgba(106, 130, 251, 0.4);
 }
 
 .missionHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1rem;
 }
 
-.missionHeader h2 {
+.missionTitle {
+  color: #fff;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #333;
-  border-bottom: solid 2px goldenrod;
+  margin: 0;
 }
 
 .status {
+  display: inline-flex;
+  align-items: center;
   padding: 0.5rem 1rem;
-  border-radius: 20px;
-  color: white;
+  border-radius: 0.7rem;
   font-size: 0.875rem;
   font-weight: 500;
+  border: 1px solid rgba(106, 130, 251, 0.2);
+}
+
+.open {
+  background: rgba(106, 130, 251, 0.2);
+  color: #6a82fb;
+}
+
+.inProgress {
+  background: rgba(67, 233, 123, 0.2);
+  color: #43e97b;
+}
+
+.completed {
+  background: rgba(252, 92, 125, 0.2);
+  color: #fc5c7d;
 }
 
 .missionDetails {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .detail {
@@ -86,64 +143,66 @@
   gap: 0.25rem;
 }
 
-.detail span {
+.detailLabel {
+  color: #b2b7ff;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.detailValue {
+  color: #fff;
   font-size: 0.875rem;
-  color: #666;
 }
 
-.detail p {
-  font-size: 1rem;
-  color: #333;
-  font-weight: 500;
+.description {
+  color: #b2b7ff;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.actions {
+.skills {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.viewButton, .editButton {
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  text-decoration: none;
+.skill {
+  padding: 0.25rem 0.75rem;
+  background: rgba(106, 130, 251, 0.2);
+  color: #6a82fb;
+  border-radius: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  transition: background-color 0.2s;
+  border: 1px solid rgba(106, 130, 251, 0.3);
 }
 
-.viewButton {
-  background-color: goldenrod;
-  color: white;
-  border: solid 2px goldenrod;
-}
-
-.viewButton:hover {
-  background-color: goldenrod;
-  color: white;
-}
-
-.editButton {
-  background-color: #e0e0e0;
-  color: #666;
-}
-
-.editButton:hover {
-  background-color: #d0d0d0;
-}
-
-.emptyState {
+.loading {
   text-align: center;
-  padding: 3rem;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  color: #b2b7ff;
 }
 
-.emptyState p {
-  color: #666;
-  margin-bottom: 1.5rem;
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #fc5c7d;
+  background: rgba(252, 92, 125, 0.1);
+  border-radius: 0.7rem;
+  border: 1px solid rgba(252, 92, 125, 0.2);
+}
+
+.noMissions {
+  text-align: center;
+  padding: 2rem;
+  color: #b2b7ff;
+  background: rgba(40, 44, 80, 0.95);
+  border-radius: 0.7rem;
+  border: 1px solid rgba(106, 130, 251, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -154,25 +213,19 @@
   .header {
     flex-direction: column;
     gap: 1rem;
-    text-align: center;
+    align-items: stretch;
   }
 
-  .missionHeader {
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
-  }
-
-  .missionDetails {
-    grid-template-columns: 1fr;
-  }
-
-  .actions {
-    flex-direction: column;
-  }
-
-  .viewButton, .editButton {
+  .createButton {
     width: 100%;
-    text-align: center;
+    justify-content: center;
+  }
+
+  .filters {
+    justify-content: center;
+  }
+
+  .missionsGrid {
+    grid-template-columns: 1fr;
   }
 } 

@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import messageService, { type Message, type Conversation } from '@/services/message.service';
 import styles from '@/styles/extranet/messages.module.css';
+import applicationService from '@/services/application.service';
+import missionService from '@/services/mission.service';
 
 const SendIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -22,6 +24,8 @@ export default function MessagesPage() {
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const previousMessagesRef = useRef<Message[]>([]);
+  const [missionSummary, setMissionSummary] = useState<any | null>(null);
+  const [applicationId, setApplicationId] = useState<number | null>(null);
 
   useEffect(() => {
     loadConversations();
@@ -36,6 +40,28 @@ export default function MessagesPage() {
       return () => clearInterval(interval);
     }
   }, [selectedConversation]);
+
+  useEffect(() => {
+    if (!selectedConversation || messages.length === 0) {
+      setMissionSummary(null);
+      setApplicationId(null);
+      return;
+    }
+    // Supposons que le premier message contient l'ID de la mission sous forme de lien ou d'info
+    const firstMessage = messages[0];
+    const missionIdMatch = firstMessage.content.match(/mission\/(\d+)/i);
+    if (missionIdMatch) {
+      const missionId = Number(missionIdMatch[1]);
+      missionService.getMissionById(missionId).then(mission => {
+        setMissionSummary(mission);
+      });
+      // Optionnel : retrouver l'application associée (si tu as l'ID dans le message ou via une API)
+      // setApplicationId(...)
+    } else {
+      setMissionSummary(null);
+      setApplicationId(null);
+    }
+  }, [selectedConversation, messages]);
 
   const loadConversations = async () => {
     try {
@@ -138,6 +164,16 @@ export default function MessagesPage() {
     return groups;
   };
 
+  const handleAccept = async () => {
+    if (!applicationId) return;
+    try {
+      await applicationService.updateStatus(applicationId, 'accepted');
+      alert('Candidature acceptée !');
+    } catch (err) {
+      alert('Erreur lors de l\'acceptation de la candidature');
+    }
+  };
+
   if (loading) {
     return <div className={styles.loading}>Chargement...</div>;
   }
@@ -184,6 +220,19 @@ export default function MessagesPage() {
             <div className={styles.chatHeader}>
               <h2>{selectedConversation.participants.find(p => p.id !== user?.id)?.name}</h2>
             </div>
+            {/* Encart mission + bouton acceptation */}
+            {missionSummary && (
+              <div className={styles.missionSummaryBox}>
+                <h3>Mission liée à cette candidature :</h3>
+                <p><strong>{missionSummary.title}</strong></p>
+                <a href={`/freelancer/mission/${missionSummary.id}`} target="_blank" rel="noopener noreferrer">Voir la mission</a>
+                {applicationId && (
+                  <button onClick={handleAccept} className={styles.acceptButton}>
+                    Accepter la candidature
+                  </button>
+                )}
+              </div>
+            )}
             <div className={styles.messageList}>
               {Object.entries(messageGroups).map(([date, groupMessages]) => (
                 <div key={date}>

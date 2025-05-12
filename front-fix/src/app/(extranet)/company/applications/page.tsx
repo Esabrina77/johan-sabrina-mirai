@@ -6,6 +6,7 @@ import companyService from '@/services/company.service';
 import type { Application } from '@/services/application.service';
 import Loader from '@/components/Loader';
 import styles from '@/styles/extranet/company/applications.module.css';
+import applicationService from '@/services/application.service';
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -100,6 +101,23 @@ export default function ApplicationsPage() {
                   >
                     Voir le profil du freelance
                   </Link>
+                  <button
+                    className={styles.acceptButton}
+                    onClick={async () => {
+                      try {
+                        await applicationService.updateStatus(application.id, 'accepted');
+                        setApplications(applications =>
+                          applications.map(app =>
+                            app.id === application.id ? { ...app, status: 'accepted' } : app
+                          )
+                        );
+                      } catch (err) {
+                        alert("Erreur lors de l'acceptation de la candidature");
+                      }
+                    }}
+                  >
+                    Accepter la candidature
+                  </button>
                 </div>
               )}
             </div>

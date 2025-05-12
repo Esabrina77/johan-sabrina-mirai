@@ -1,30 +1,30 @@
 .sidebar {
   width: 280px;
   height: 100vh;
-  background-color: #fff;
-  border-right: 1px solid #e5e7eb;
+  background: rgba(40, 44, 80, 0.95);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(106, 130, 251, 0.2);
   padding: 1.5rem;
   position: fixed;
   left: 0;
   top: 0;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 2rem;
-  color: #111827;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .logo a {
   text-decoration: none;
   color: inherit;
-}
-
-.logo a:hover {
-  color: goldenrod
 }
 
 .nav {
@@ -39,20 +39,23 @@
   align-items: center;
   padding: 0.75rem 1rem;
   text-decoration: none;
-  background-color: goldenrod;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
+  color: #b2b7ff;
+  border-radius: 0.7rem;
+  transition: all 0.3s;
+  border: 1px solid rgba(106, 130, 251, 0.1);
 }
 
 .link:hover {
-  background-color: goldenrod;
-  color:white
+  background: linear-gradient(90deg, rgba(106, 130, 251, 0.1), rgba(252, 92, 125, 0.1));
+  color: #fff;
+  transform: translateX(5px);
 }
 
 .active {
-  background-color: goldenrod;
-  border: solid 2px black;
+  background: linear-gradient(90deg, rgba(106, 130, 251, 0.2), rgba(252, 92, 125, 0.2));
+  color: #fff;
   font-weight: 500;
+  border: 1px solid rgba(106, 130, 251, 0.3);
 }
 
 .icon {
@@ -62,12 +65,12 @@
 
 .userInfo {
   padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid rgba(106, 130, 251, 0.2);
 }
 
 .userName {
   font-weight: 500;
-  color: #111827;
+  color: #fff;
   margin-bottom: 0.5rem;
 }
 
@@ -77,13 +80,14 @@
   align-items: center;
   padding: 0.75rem 1rem;
   background: none;
-  border: none;
+  border: 1px solid rgba(239, 68, 68, 0.3);
   color: #ef4444;
   cursor: pointer;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
+  border-radius: 0.7rem;
+  transition: all 0.3s;
 }
 
 .logoutButton:hover {
-  background-color: #fef2f2;
+  background: rgba(239, 68, 68, 0.1);
+  transform: translateX(5px);
 } 

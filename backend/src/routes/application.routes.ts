@@ -6,7 +6,7 @@ import { isCompany } from '../middleware/role.middleware';
 const router = Router();
 
 // Route pour postuler à une mission
-router.post('/', authenticateToken, applicationController.applyToMission as unknown as RequestHandler);
+router.post('/', authenticateToken, applicationController.apply as unknown as RequestHandler);
 
 // Routes pour obtenir les candidatures
 router.get('/received', authenticateToken, isCompany, applicationController.getReceivedApplications as unknown as RequestHandler);

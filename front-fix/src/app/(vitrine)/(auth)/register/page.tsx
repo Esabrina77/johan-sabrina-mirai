@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
-import styles from '@/styles/site/auth.module.css';
+import './register.css';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -40,68 +40,46 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className={styles.authContainer}>
-      <div className={styles.authBox}>
-        <div className={styles.authHeader}>
-          <h2 className={styles.authTitle}>Inscription</h2>
-          <p className={styles.authSubtitle}>
-            Créez votre compte pour accéder à nos services
-          </p>
-        </div>
-
-        <form className={styles.authForm} onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <input
-              type="text"
-              name="name"
-              required
-              className={styles.inputField}
-              placeholder="Nom complet"
-              minLength={2}
-            />
-            <input
-              type="email"
-              name="email"
-              required
-              className={styles.inputField}
-              placeholder="Email"
-            />
-            <input
-              type="password"
-              name="password"
-              required
-              className={styles.inputField}
-              placeholder="Mot de passe"
-              minLength={6}
-            />
-            <select
-              name="role"
-              required
-              className={styles.inputField}
-              defaultValue=""
-            >
-              <option value="" disabled>Sélectionnez votre rôle</option>
-              <option value="company">Entreprise</option>
-              <option value="freelancer">Freelance</option>
-            </select>
-          </div>
-
-          {error && <div className={styles.errorMessage}>{error}</div>}
-
-          <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={loading}
+    <div className="auth-futuristic-bg">
+      <div className="auth-card">
+        <h2 className="auth-title">Inscription</h2>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            required
+            placeholder="Nom complet"
+            minLength={2}
+          />
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            name="password"
+            required
+            placeholder="Mot de passe"
+            minLength={6}
+          />
+          <select
+            name="role"
+            required
+            defaultValue=""
           >
+            <option value="" disabled>Sélectionnez votre rôle</option>
+            <option value="company">Entreprise</option>
+            <option value="freelancer">Freelance</option>
+          </select>
+          {error && <div className="error-message">{error}</div>}
+          <button type="submit" disabled={loading}>
             {loading ? 'Inscription...' : 'S\'inscrire'}
           </button>
         </form>
-
-        <div className={styles.switchLink}>
-          Déjà un compte ?{' '}
-          <Link href="/login">
-            Se connecter
-          </Link>
+        <div className="auth-links">
+          <Link href="/login">Se connecter</Link>
         </div>
       </div>
     </div>

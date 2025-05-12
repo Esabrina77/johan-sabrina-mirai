@@ -4,9 +4,23 @@ import { useState, useEffect } from 'react';
 import freelancerService, { type Freelancer } from '@/services/freelancer.service';
 import styles from '@/styles/extranet/profile.module.css';
 
+interface DetailsFormData {
+  skills?: string[];
+  location?: string;
+  description?: string;
+  hourlyRate?: number;
+  experience?: {
+    years?: number;
+    projects?: number;
+    certifications?: number;
+  };
+  [key: string]: any;
+}
+
 interface FormData {
   name?: string;
   email?: string;
+  details?: DetailsFormData;
 }
 
 export default function ProfilePage() {
@@ -15,13 +29,21 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<FormData>({});
+  const [newSkill, setNewSkill] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const data = await freelancerService.getProfile();
         setProfile(data);
-        setFormData({});
+        setFormData({
+          name: data.name,
+          email: data.email,
+          details: {
+            ...data.details
+          }
+        });
+        console.log('Profil récupéré:', data);
       } catch (err) {
         setError('Erreur lors du chargement du profil');
         console.error(err);
@@ -33,14 +55,37 @@ export default function ProfilePage() {
     fetchProfile();
   }, []);
 
+  const handleDetailsChange = (field: keyof DetailsFormData, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        [field]: value
+      }
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profile || Object.keys(formData).length === 0) return;
+    if (!profile) return;
 
     try {
-      const updatedProfile = await freelancerService.updateProfile(formData);
+      const updatedProfile = await freelancerService.updateProfile({
+        name: formData.name,
+        email: formData.email,
+        details: {
+          ...formData.details,
+          skills: formData.details?.skills || []
+        }
+      });
       setProfile(updatedProfile);
-      setFormData({});
+      setFormData({
+        name: updatedProfile.name,
+        email: updatedProfile.email,
+        details: {
+          ...updatedProfile.details
+        }
+      });
       setIsEditing(false);
       setError(null);
     } catch (err) {
@@ -53,6 +98,29 @@ export default function ProfilePage() {
     setFormData(prev => ({
       ...prev,
       [field]: value
+    }));
+  };
+
+  const handleAddSkill = () => {
+    if (!newSkill.trim()) return;
+    
+    setFormData(prev => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        skills: [...(prev.details?.skills || []), newSkill.trim()]
+      }
+    }));
+    setNewSkill('');
+  };
+
+  const handleRemoveSkill = (skillToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        skills: (prev.details?.skills || []).filter(skill => skill !== skillToRemove)
+      }
     }));
   };
 
@@ -73,10 +141,57 @@ export default function ProfilePage() {
             <p>Rôle: {profile.role === 'freelancer' ? 'Freelance' : profile.role}</p>
           </div>
 
+          <div className={styles.section}>
+            <h2>Compétences</h2>
+            {profile.details?.skills && profile.details.skills.length > 0 ? (
+              <div className={styles.skillsList}>
+                {profile.details.skills.map((skill, index) => (
+                  <span key={index} className={styles.skillTag}>{skill}</span>
+                ))}
+              </div>
+            ) : (
+              <p>Aucune compétence renseignée</p>
+            )}
+          </div>
+
+          <div className={styles.section}>
+            <h2>Localisation</h2>
+            <p>{profile.details?.location || 'Non renseignée'}</p>
+          </div>
+
+          <div className={styles.section}>
+            <h2>Description</h2>
+            <p>{profile.details?.description || 'Non renseignée'}</p>
+          </div>
+
+          <div className={styles.section}>
+            <h2>Tarif horaire</h2>
+            <p>{profile.details?.hourlyRate ? profile.details.hourlyRate + ' €/h' : 'Non renseigné'}</p>
+          </div>
+
+          <div className={styles.section}>
+            <h2>Expérience</h2>
+            {profile.details?.experience ? (
+              <ul>
+                <li>Années d'expérience : {profile.details.experience.years ?? 'Non renseigné'}</li>
+                <li>Projets réalisés : {profile.details.experience.projects ?? 'Non renseigné'}</li>
+                <li>Certifications : {profile.details.experience.certifications ?? 'Non renseigné'}</li>
+              </ul>
+            ) : (
+              <p>Non renseignée</p>
+            )}
+          </div>
+
           <button 
             onClick={() => {
               setIsEditing(true);
-              setFormData({});
+              setFormData({
+                name: profile.name,
+                email: profile.email,
+                details: {
+                  ...profile.details
+                }
+              });
             }}
             className={styles.editButton}
           >
@@ -98,8 +213,8 @@ export default function ProfilePage() {
             <input
               type="text"
               id="name"
-              defaultValue={profile.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
+              value={formData.name || ''}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               className={styles.input}
             />
           </div>
@@ -109,9 +224,64 @@ export default function ProfilePage() {
             <input
               type="email"
               id="email"
-              defaultValue={profile.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
+              value={formData.email || ''}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
               className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Compétences</label>
+            <div className={styles.skillsInput}>
+              <input
+                type="text"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                placeholder="Ajouter une compétence"
+                className={styles.input}
+              />
+              <button
+                type="button"
+                onClick={handleAddSkill}
+                className={styles.addButton}
+              >
+                Ajouter
+              </button>
+            </div>
+            <div className={styles.skillsList}>
+              {formData.details?.skills?.map((skill, index) => (
+                <span key={index} className={styles.skillTag}>
+                  {skill}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSkill(skill)}
+                    className={styles.removeSkillButton}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="location">Localisation</label>
+            <input
+              type="text"
+              id="location"
+              value={formData.details?.location || ''}
+              onChange={(e) => handleDetailsChange('location', e.target.value)}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              value={formData.details?.description || ''}
+              onChange={(e) => handleDetailsChange('description', e.target.value)}
+              className={styles.textarea}
             />
           </div>
 
@@ -119,18 +289,24 @@ export default function ProfilePage() {
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={Object.keys(formData).length === 0}
             >
               Enregistrer
             </button>
             <button
               type="button"
-              className={styles.cancelButton}
               onClick={() => {
                 setIsEditing(false);
-                setFormData({});
+                setFormData({
+                  name: profile.name,
+                  email: profile.email,
+                  details: {
+                    ...profile.details
+                  }
+                });
               }}
-            >Annuler
+              className={styles.cancelButton}
+            >
+              Annuler
             </button>
           </div>
         </form>

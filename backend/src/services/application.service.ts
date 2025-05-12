@@ -1,7 +1,10 @@
 import { prisma } from '../lib/prisma';
 import { ApplicationStatus } from '@prisma/client';
+import { createConversation } from './message.service';
 
-export const applyToMission = async (freelancerId: number, missionId: number) => {
+export const applyToMission = async (freelancerId: number, missionId: number, message: string) => {
+  console.log('Début de applyToMission:', { freelancerId, missionId, message });
+
   // Vérifier si l'utilisateur a déjà postulé à cette mission
   const existingApplication = await prisma.application.findFirst({
     where: {
@@ -11,7 +14,7 @@ export const applyToMission = async (freelancerId: number, missionId: number) =>
   });
 
   if (existingApplication) {
-    throw new Error('You have already applied to this mission');
+    throw new Error('Vous avez déjà postulé à cette mission');
   }
 
   // Vérifier si la mission existe
@@ -19,20 +22,54 @@ export const applyToMission = async (freelancerId: number, missionId: number) =>
     where: {
       id: missionId,
     },
+    include: {
+      company: true
+    }
   });
 
   if (!mission) {
-    throw new Error('Mission not found');
+    throw new Error('Mission non trouvée');
   }
 
-  // Créer la candidature
-  return prisma.application.create({
+  console.log('Mission trouvée:', mission);
+
+  try {
+    // Créer la candidature et la conversation en même temps
+    const result = await prisma.$transaction(async (tx) => {
+      // 1. Créer la candidature
+      const application = await tx.application.create({
     data: {
       freelancerId,
       missionId,
       status: ApplicationStatus.sent,
     },
   });
+
+      console.log('Candidature créée:', application);
+
+      // 2. Utiliser createConversation du service message avec le client transactionnel
+      const conversation = await createConversation([freelancerId, mission.company.id], tx);
+      console.log('Conversation (unique) obtenue:', conversation);
+
+      // 3. Créer le premier message avec la candidature
+      const firstMessage = await tx.message.create({
+        data: {
+          content: message,
+          senderId: freelancerId,
+          conversationId: conversation.id
+        }
+      });
+
+      console.log('Message créé:', firstMessage);
+
+      return application;
+    });
+
+    return result;
+  } catch (error) {
+    console.error('Erreur dans la transaction:', error);
+    throw new Error('Erreur lors de la création de la candidature et de la conversation');
+  }
 };
 
 export const getFreelancerApplications = async (freelancerId: number) => {

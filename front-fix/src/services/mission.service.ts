@@ -11,6 +11,10 @@ export interface Mission {
   requiredSkills?: string[];
   createdAt: string;
   updatedAt: string;
+  company?: {
+    id: number;
+    name: string;
+  };
 }
 
 const missionService = {

@@ -24,13 +24,13 @@
   margin-top: 1.5rem;
   font-size: 1.875rem;
   font-weight: 800;
-  color: goldenrod;
+  color: #111827;
 }
 
 .authSubtitle {
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: black;
+  color: #6b7280;
 }
 
 .authForm {
@@ -72,14 +72,13 @@
   font-size: 0.875rem;
   font-weight: 500;
   color: white;
-  background-color: goldenrod;
+  background-color: #3B82F6;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .submitButton:hover {
-  background-color: goldenrod;
-  color: black;
+  background-color: #2563EB;
 }
 
 .submitButton:focus {
@@ -96,18 +95,17 @@
   margin-top: 1rem;
   font-size: 0.875rem;
   text-align: center;
-  color: black;
 }
 
 .switchLink a {
-  color: goldenrod;
+  color: #3B82F6;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .switchLink a:hover {
-  
+  color: #2563EB;
 }
 
 .errorMessage {

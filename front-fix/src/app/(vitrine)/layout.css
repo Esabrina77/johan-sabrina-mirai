@@ -1,0 +1,10 @@
+.main-content {
+    margin-top: 80px;
+    flex-grow: 1;
+  }
+
+.page {
+    background: linear-gradient(90deg, #23243a 0%, #3a3d5c 100%);
+}
+
+

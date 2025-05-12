@@ -3,39 +3,23 @@ import * as applicationService from '../services/application.service';
 import { ApplicationStatus } from '@prisma/client';
 
 // Soumettre une candidature
-export const applyToMission = async (req: Request, res: Response) => {
+export const apply = async (req: Request, res: Response) => {
   try {
-    const { missionId } = req.body;
-    
-    // Vérifier si l'utilisateur est authentifié
-    if (!req.user || !req.user.userId) {
-      return res.status(401).json({ error: 'User not authenticated' });
+    const { missionId, message } = req.body;
+    const freelancerId = req.user?.userId;
+
+    if (!freelancerId) {
+      return res.status(401).json({ error: 'Non autorisé' });
     }
 
-    const userId = req.user.userId;
-
-    // Validation de base
-    if (!missionId) {
-      return res.status(400).json({ error: 'Mission ID is required' });
+    if (!message) {
+      return res.status(400).json({ error: 'Le message de candidature est requis' });
     }
 
-    const result = await applicationService.applyToMission(userId, missionId);
-
-    return res.status(201).json({
-      message: 'Application submitted successfully',
-      application: result,
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      if (error.message === 'You have already applied to this mission') {
-        return res.status(400).json({ error: error.message });
-      }
-      if (error.message === 'Mission not found') {
-        return res.status(404).json({ error: error.message });
-      }
-    }
-    console.error('Application error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    const application = await applicationService.applyToMission(freelancerId, missionId, message);
+    res.status(201).json(application);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
   }
 };
 

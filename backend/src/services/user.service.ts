@@ -27,8 +27,63 @@ export const getUserById = async (userId: number) => {
   });
 };
 
+export const getFullProfileByUserId = async (userId: number) => {
+  return prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      profile: {
+        select: {
+          type: true,
+          details: true,
+        }
+      }
+    },
+  });
+};
+
+export const updateFullProfile = async (
+  userId: number,
+  data: { name?: string; email?: string; details?: any }
+) => {
+  if (data.email) {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        email: data.email,
+        NOT: { id: userId },
+      },
+    });
+    if (existingUser) throw new Error('Email already exists');
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      name: data.name,
+      email: data.email,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  });
+
+  if (data.details) {
+    await prisma.profile.update({
+      where: { userId },
+      data: { details: data.details },
+    });
+  }
+
+  return getFullProfileByUserId(userId);
+};
+
 export const updateUser = async (userId: number, data: { name?: string; email?: string }) => {
-  // Vérifier si l'email existe déjà pour un autre utilisateur
   if (data.email) {
     const existingUser = await prisma.user.findFirst({
       where: {

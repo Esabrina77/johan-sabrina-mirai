@@ -1,9 +1,13 @@
-import { prisma } from '../lib/prisma';
+import { prisma as globalPrisma } from '../lib/prisma';
+import type { PrismaClient, Prisma } from '@prisma/client';
 
 // Créer une nouvelle conversation
-export const createConversation = async (participantIds: number[]) => {
+export const createConversation = async (
+  participantIds: number[],
+  prismaClient: PrismaClient | Prisma.TransactionClient = globalPrisma
+) => {
   // Vérifier si une conversation existe déjà entre ces participants
-  const existingConversation = await prisma.conversation.findFirst({
+  const existingConversation = await prismaClient.conversation.findFirst({
     where: {
       participants: {
         every: {
@@ -23,7 +27,7 @@ export const createConversation = async (participantIds: number[]) => {
   }
 
   // Créer une nouvelle conversation
-  return prisma.conversation.create({
+  return prismaClient.conversation.create({
     data: {
       participants: {
         connect: participantIds.map(id => ({ id }))
@@ -38,7 +42,7 @@ export const createConversation = async (participantIds: number[]) => {
 // Envoyer un message
 export const sendMessage = async (senderId: number, conversationId: number, content: string) => {
   // Vérifier si l'expéditeur fait partie de la conversation
-  const conversation = await prisma.conversation.findFirst({
+  const conversation = await globalPrisma.conversation.findFirst({
     where: {
       id: conversationId,
       participants: {
@@ -54,7 +58,7 @@ export const sendMessage = async (senderId: number, conversationId: number, cont
   }
 
   // Créer le message
-  return prisma.message.create({
+  return globalPrisma.message.create({
     data: {
       content,
       senderId,
@@ -74,7 +78,7 @@ export const sendMessage = async (senderId: number, conversationId: number, cont
 
 // Récupérer les conversations d'un utilisateur
 export const getUserConversations = async (userId: number) => {
-  const conversations = await prisma.conversation.findMany({
+  const conversations = await globalPrisma.conversation.findMany({
     where: {
       participants: {
         some: {
@@ -107,8 +111,8 @@ export const getUserConversations = async (userId: number) => {
   });
 
   // Transformer les données pour inclure le dernier message et le compteur de messages non lus
-  return Promise.all(conversations.map(async (conv) => {
-    const unreadCount = await prisma.message.count({
+  return Promise.all(conversations.map(async (conv: any) => {
+    const unreadCount = await globalPrisma.message.count({
       where: {
         conversationId: conv.id,
         senderId: {
@@ -130,7 +134,7 @@ export const getUserConversations = async (userId: number) => {
 // Récupérer les messages d'une conversation
 export const getConversationMessages = async (conversationId: number, userId: number) => {
   // Vérifier si l'utilisateur fait partie de la conversation
-  const conversation = await prisma.conversation.findFirst({
+  const conversation = await globalPrisma.conversation.findFirst({
     where: {
       id: conversationId,
       participants: {
@@ -145,7 +149,7 @@ export const getConversationMessages = async (conversationId: number, userId: nu
     throw new Error('Conversation not found or unauthorized');
   }
 
-  return prisma.message.findMany({
+  return globalPrisma.message.findMany({
     where: {
       conversationId
     },
@@ -167,7 +171,7 @@ export const getConversationMessages = async (conversationId: number, userId: nu
 // Marquer les messages comme lus
 export const markMessagesAsRead = async (conversationId: number, userId: number) => {
   // Vérifier que l'utilisateur est participant de la conversation
-  const conversation = await prisma.conversation.findFirst({
+  const conversation = await globalPrisma.conversation.findFirst({
     where: {
       id: conversationId,
       participants: {
@@ -183,7 +187,7 @@ export const markMessagesAsRead = async (conversationId: number, userId: number)
   }
 
   // Marquer tous les messages non lus comme lus
-  await prisma.message.updateMany({
+  await globalPrisma.message.updateMany({
     where: {
       conversationId,
       senderId: {
@@ -197,7 +201,7 @@ export const markMessagesAsRead = async (conversationId: number, userId: number)
   });
 
   // Vérifier que les messages ont été mis à jour
-  const messages = await prisma.message.findMany({
+  const messages = await globalPrisma.message.findMany({
     where: {
       conversationId,
       senderId: {

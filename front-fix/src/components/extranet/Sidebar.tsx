@@ -10,20 +10,20 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const freelancerLinks = [
-    { href: '/freelancer/dashboard', label: 'Tableau de bord', },
-    { href: '/freelancer/missions', label: 'Missions', },
-    { href: '/freelancer/applications', label: 'Candidatures', },
-    { href: '/freelancer/messages', label: 'Messages', },
-    { href: '/freelancer/profile', label: 'Profil', },
+    { href: '/freelancer/dashboard', label: 'Tableau de bord', icon: '📊' },
+    { href: '/freelancer/missions', label: 'Missions', icon: '📋' },
+    { href: '/freelancer/applications', label: 'Candidatures', icon: '📬' },
+    { href: '/freelancer/messages', label: 'Messages', icon: '💬' },
+    { href: '/freelancer/profile', label: 'Profil', icon: '👤' },
   ];
 
   const companyLinks = [
-    { href: '/company/dashboard', label: 'Tableau de bord', },
-    { href: '/company/missions', label: 'Mes missions', },
-    { href: '/company/create-mission', label: 'Créer une mission', },
-    { href: '/company/applications', label: 'Candidatures reçues', },
-    { href: '/company/messages', label: 'Messages', },
-    { href: '/company/profile', label: 'Profil', },
+    { href: '/company/dashboard', label: 'Tableau de bord', icon: '📊' },
+    { href: '/company/missions', label: 'Mes missions', icon: '📋' },
+    { href: '/company/create-mission', label: 'Créer une mission', icon: '➕' },
+    { href: '/company/applications', label: 'Candidatures reçues', icon: '📬' },
+    { href: '/company/messages', label: 'Messages', icon: '💬' },
+    { href: '/company/profile', label: 'Profil', icon: '👤' },
   ];
 
   const links = user?.role === 'freelancer' ? freelancerLinks : companyLinks;
@@ -55,7 +55,7 @@ export default function Sidebar() {
       <div className={styles.userInfo}>
         <div className={styles.userName}>{user?.name}</div>
         <button onClick={handleLogout} className={styles.logoutButton}>
-          <span className={styles.icon}></span>
+          <span className={styles.icon}>🚪</span>
           Déconnexion
         </button>
       </div>

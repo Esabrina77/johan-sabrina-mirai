@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
+    "@types/stripe": "^8.0.416",
     "axios": "^1.8.4",
     "js-cookie": "^3.0.5",
     "next": "15.2.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "stripe": "^18.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
