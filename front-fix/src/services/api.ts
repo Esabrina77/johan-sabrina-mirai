@@ -7,7 +7,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   },
-  withCredentials: false // Désactivé pour le moment pour tester les appels API basiques
+  withCredentials: true
 });
 
 // Intercepteur simple pour le token
