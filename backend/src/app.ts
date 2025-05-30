@@ -16,7 +16,13 @@ import userRoutes from './routes/user.routes';
 const app = express();
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: 'http://front.local',
+  credentials: true, // autorise les cookies / headers d'auth
+};
+
+app.use(cors(corsOptions));
+
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
